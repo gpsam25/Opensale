@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>桌遊清倉特賣 · CLEARANCE 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Serif+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1410;
+    --bg-2: #161d18;
+    --paper: #f4ead5;
+    --paper-dim: #e8dcc0;
+    --ink: #1a1f1c;
+    --accent: #d4452b;
+    --accent-glow: #ff6b47;
+    --gold: #c9a961;
+    --gold-bright: #e8c87c;
+    --moss: #5a7a4f;
+    --rust: #b85c38;
+    --line: rgba(244, 234, 213, 0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--paper);
+    font-family: 'Noto Serif TC', 'Cormorant Garamond', serif;
+    font-weight: 400;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(212, 69, 43, 0.08), transparent 40%),
+      radial-gradient(circle at 85% 70%, rgba(201, 169, 97, 0.06), transparent 45%),
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  }
+
+  /* ===== HEADER ===== */
+  .hero {
+    position: relative;
+    padding: 60px 40px 40px;
+    border-bottom: 1px solid var(--line);
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(135deg, transparent 49.5%, rgba(212, 69, 43, 0.05) 49.5%, rgba(212, 69, 43, 0.05) 50.5%, transparent 50.5%),
+      linear-gradient(45deg, transparent 49.5%, rgba(201, 169, 97, 0.04) 49.5%, rgba(201, 169, 97, 0.04) 50.5%, transparent 50.5%);
+    background-size: 60px 60px;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .hero-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .eyebrow::before, .eyebrow::after {
+    content: '';
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.4;
+    flex: 0 0 40px;
+  }
+
+  .eyebrow::after { flex: 1; }
+
+  .title-wrap {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 40px;
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 900;
+    font-size: clamp(54px, 8vw, 120px);
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    color: var(--paper);
+    text-shadow: 2px 2px 0 var(--accent);
+  }
+
+  h1 .italic {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--gold-bright);
+    text-shadow: none;
+    display: block;
+    font-size: 0.65em;
+    margin-top: -0.1em;
+  }
+
+  .date-stamp {
+    font-family: 'JetBrains Mono', monospace;
+    text-align: right;
+    color: var(--paper-dim);
+    opacity: 0.6;
+    font-size: 12px;
+    line-height: 1.5;
+    border-left: 1px solid var(--line);
+    padding-left: 20px;
+  }
+
+  .date-stamp strong {
+    display: block;
+    font-size: 24px;
+    color: var(--gold);
+    margin-top: 4px;
+  }
+
+  .hero-desc {
+    max-width: 720px;
+    color: var(--paper-dim);
+    opacity: 0.85;
+    font-size: 17px;
+    margin-top: 24px;
+    font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
+    font-style: italic;
+  }
+
+  .promo-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 36px;
+  }
+
+  .promo-tag {
+    background: rgba(212, 69, 43, 0.1);
+    border: 1px solid var(--accent);
+    color: var(--accent-glow);
+    padding: 8px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .promo-tag.gold {
+    background: rgba(201, 169, 97, 0.08);
+    border-color: var(--gold);
+    color: var(--gold-bright);
+  }
+
+  /* ===== STATS BAR ===== */
+  .stats {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .stat {
+    padding: 0 24px;
+    border-right: 1px solid var(--line);
+    position: relative;
+  }
+
+  .stat:last-child { border-right: none; }
+  .stat:first-child { padding-left: 0; }
+
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--gold-bright);
+    display: block;
+  }
+
+  .stat-num small {
+    font-size: 0.4em;
+    color: var(--paper-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 400;
+    margin-left: 4px;
+  }
+
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    opacity: 0.7;
+    margin-top: 8px;
+  }
+
+  /* ===== CONTROLS ===== */
+  .controls {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 32px 40px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 50;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .search-wrap {
+    flex: 1;
+    min-width: 280px;
+    position: relative;
+  }
+
+  .search-wrap::before {
+    content: '◈';
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gold);
+    font-size: 14px;
+    pointer-events: none;
+  }
+
+  .search {
+    width: 100%;
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    color: var(--paper);
+    padding: 14px 16px 14px 40px;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 15px;
+    transition: all 0.3s ease;
+  }
+
+  .search:focus {
+    outline: none;
+    border-color: var(--gold);
+    background: rgba(201, 169, 97, 0.05);
+  }
+
+  .search::placeholder { color: var(--paper-dim); opacity: 0.4; }
+
+  .filter-group {
+    display: flex;
+    gap: 4px;
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    padding: 4px;
+  }
+
+  .filter-btn {
+    background: transparent;
+    border: none;
+    color: var(--paper-dim);
+    padding: 10px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .filter-btn:hover { color: var(--paper); }
+
+  .filter-btn.active {
+    background: var(--accent);
+    color: var(--paper);
+  }
+
+  .sort {
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    color: var(--paper);
+    padding: 13px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .sort:focus { outline: none; border-color: var(--gold); }
+
+  /* ===== GRID ===== */
+  main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px;
+  }
+
+  .result-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    opacity: 0.6;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .result-count span {
+    color: var(--gold);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+
+  .card {
+    background: var(--bg-2);
+    padding: 24px;
+    position: relative;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    min-height: 380px;
+    text-decoration: none;
+    color: inherit;
+    overflow: hidden;
+  }
+
+  .card:hover {
+    background: #1c2520;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+    z-index: 2;
+  }
+
+  .card-image {
+    width: calc(100% + 48px);
+    height: 180px;
+    margin: -24px -24px 16px;
+    background: #0a0e0b;
+    overflow: hidden;
+    position: relative;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease, opacity 0.4s ease;
+    opacity: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .card-image img.loaded { opacity: 1; }
+  .card:hover .card-image img.loaded { transform: scale(1.06); }
+
+  .card-image::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 30% 30%, rgba(212, 69, 43, 0.2), transparent 60%),
+      radial-gradient(circle at 70% 70%, rgba(201, 169, 97, 0.15), transparent 60%);
+    z-index: 0;
+  }
+
+  .card-image-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 8px;
+    color: var(--gold);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 13px;
+    opacity: 0.5;
+    z-index: 0;
+    letter-spacing: 0.1em;
+  }
+
+  .card-image-placeholder::before {
+    content: '◈';
+    font-size: 32px;
+    opacity: 0.7;
+  }
+
+  .external-icon {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 4px 8px;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(6px);
+    color: var(--paper);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    z-index: 3;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    text-transform: uppercase;
+  }
+
+  .card:hover .external-icon { opacity: 1; }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--accent);
+    transition: width 0.4s ease;
+  }
+
+  .card:hover::before { width: 100%; }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+    gap: 12px;
+  }
+
+  .card-name {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 700;
+    font-size: 17px;
+    line-height: 1.3;
+    color: var(--paper);
+    flex: 1;
+  }
+
+  .discount-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 8px;
+    background: var(--accent);
+    color: var(--paper);
+    white-space: nowrap;
+    letter-spacing: 0.05em;
+  }
+
+  .discount-badge.hot { background: var(--accent-glow); animation: pulse 2s ease-in-out infinite; }
+  .discount-badge.warm { background: var(--rust); }
+  .discount-badge.mild { background: var(--moss); }
+  .discount-badge.light { background: var(--gold); color: var(--ink); }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255, 107, 71, 0.6); }
+    50% { box-shadow: 0 0 0 6px rgba(255, 107, 71, 0); }
+  }
+
+  .card-body {
+    margin-top: auto;
+  }
+
+  .price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-top: 12px;
+    padding-top: 16px;
+    border-top: 1px dashed var(--line);
+  }
+
+  .price-final {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px;
+    font-weight: 700;
+    color: var(--gold-bright);
+    line-height: 1;
+  }
+
+  .price-final::before {
+    content: 'NT$';
+    font-size: 0.45em;
+    color: var(--paper-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 400;
+    margin-right: 4px;
+    vertical-align: super;
+    opacity: 0.7;
+  }
+
+  .savings {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--moss);
+    letter-spacing: 0.1em;
+    margin-top: 6px;
+    opacity: 0.9;
+  }
+
+  .empty {
+    grid-column: 1 / -1;
+    padding: 80px 20px;
+    text-align: center;
+    color: var(--paper-dim);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 20px;
+    opacity: 0.5;
+  }
+
+  /* ===== 庫存徽章 ===== */
+  .stock-badge {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    padding: 5px 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    z-index: 3;
+    text-transform: uppercase;
+    backdrop-filter: blur(6px);
+  }
+
+  .stock-badge.urgent {
+    background: rgba(212, 69, 43, 0.92);
+    color: #fff;
+    animation: stockPulse 1.8s ease-in-out infinite;
+  }
+
+  .stock-badge.low {
+    background: rgba(201, 169, 97, 0.92);
+    color: var(--ink);
+  }
+
+  @keyframes stockPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.04); }
+  }
+
+  /* ===== 資料來源狀態列 ===== */
+  .source-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    color: var(--paper-dim);
+  }
+
+  .source-status.live { border-color: var(--moss); color: var(--moss); }
+  .source-status.offline { border-color: var(--rust); color: var(--rust); opacity: 0.7; }
+
+  .source-status .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .source-status .dot.live {
+    background: #6fbf5b;
+    box-shadow: 0 0 8px #6fbf5b;
+    animation: livePulse 2s ease-in-out infinite;
+  }
+  .source-status .dot.offline {
+    background: var(--rust);
+  }
+  .source-status small {
+    opacity: 0.6;
+    letter-spacing: 0.05em;
+    text-transform: none;
+  }
+
+  @keyframes livePulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    max-width: 1400px;
+    margin: 60px auto 0;
+    padding: 40px;
+    border-top: 1px solid var(--line);
+    text-align: center;
+    color: var(--paper-dim);
+    font-size: 13px;
+    opacity: 0.6;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.1em;
+  }
+
+  footer .divider {
+    color: var(--accent);
+    margin: 0 12px;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    .hero { padding: 40px 20px 30px; }
+    .title-wrap { grid-template-columns: 1fr; }
+    .date-stamp { text-align: left; border-left: none; border-top: 1px solid var(--line); padding: 16px 0 0; }
+    .stats { grid-template-columns: repeat(2, 1fr); gap: 24px 0; padding: 24px 20px; }
+    .stat { padding: 0 16px; }
+    .stat:nth-child(2) { border-right: none; }
+    .stat:nth-child(3) { padding-left: 0; }
+    .controls { padding: 20px; }
+    main { padding: 24px 20px; }
+    .grid { grid-template-columns: 1fr; }
+  }
+
+  /* Entry animation */
+  .card {
+    animation: fadeUp 0.5s ease-out backwards;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">
+      <span>Board Game Clearance · 桌遊清倉</span>
+    </div>
+    <div class="title-wrap">
+      <h1>
+        清倉特賣
+        <span class="italic">Final Roll of the Dice.</span>
+      </h1>
+      <div class="date-stamp">
+        UPDATED<br>
+        <strong>05 / 19</strong>
+      </div>
+    </div>
+    <p class="hero-desc">
+      精選對外表單品項,涵蓋從重策略到派對遊戲。所有清倉品項皆已標示最終結帳價格與折扣比例,等你來把它們帶回家。
+    </p>
+    <div class="promo-strip">
+      <span class="promo-tag">滿千折百已套用</span>
+      <span class="promo-tag gold">最低 26 折</span>
+      <span class="promo-tag gold">共 220+ 款桌遊</span>
+      <span class="promo-tag">當日不接受議價</span>
+    </div>
+  </div>
+</header>
+
+<section class="stats">
+  <div class="stat">
+    <span class="stat-num" id="stat-count">—</span>
+    <div class="stat-label">Total Items · 品項</div>
+  </div>
+  <div class="stat">
+    <span class="stat-num" id="stat-min">—<small>折</small></span>
+    <div class="stat-label">Lowest · 最低折扣</div>
+  </div>
+  <div class="stat">
+    <span class="stat-num" id="stat-cheap">—</span>
+    <div class="stat-label">From · 最低價格 NT$</div>
+  </div>
+  <div class="stat">
+    <span class="stat-num" id="stat-avg">—<small>折</small></span>
+    <div class="stat-label">Average · 平均折扣</div>
+  </div>
+</section>
+
+<section class="controls">
+  <div class="search-wrap">
+    <input type="text" class="search" id="search" placeholder="搜尋遊戲名稱⋯⋯ 例如：卡坦、瘟疫、巫師">
+  </div>
+  <div class="filter-group" id="filter-group">
+    <button class="filter-btn active" data-filter="all">全部</button>
+    <button class="filter-btn" data-filter="hot">特惠 ≤50%</button>
+    <button class="filter-btn" data-filter="warm">50–70%</button>
+    <button class="filter-btn" data-filter="mild">70–80%</button>
+    <button class="filter-btn" data-filter="light">80%+</button>
+  </div>
+  <select class="sort" id="sort">
+    <option value="discount-asc">折扣 低 → 高</option>
+    <option value="discount-desc">折扣 高 → 低</option>
+    <option value="price-asc">價格 低 → 高</option>
+    <option value="price-desc">價格 高 → 低</option>
+    <option value="name">依名稱</option>
+  </select>
+</section>
+
+<main>
+  <div class="result-count">
+    <span id="visible-count">—</span>
+    <span id="source-status" class="source-status">LOADING ⋯</span>
+  </div>
+  <div class="grid" id="grid"></div>
+</main>
+
+<footer>
+  桌遊清倉 <span class="divider">◆</span> 2026 SPRING EDITION <span class="divider">◆</span> 所有清倉活動當日恕不接受議價與退換貨
+</footer>
+
+<script>
+  // ========================================================================
+  // 📌 設定區 — 把 Google 試算表發佈為 CSV 後,將 URL 貼到下方 CSV_URL
+  // ========================================================================
+  // 操作步驟:
+  //   1. 在試算表新增一欄「庫存」(數字,0 = 售完不顯示)
+  //   2. 檔案 → 共用 → 發佈到網路 → 選 CSV 格式 → 勾選自動重新發佈 → 發佈
+  //   3. 複製產生的 .csv URL 貼到下方
+  //   4. 若想暫時用本地內建資料,把 CSV_URL 設為空字串 ''
+  // ========================================================================
+  const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS-nLCfpodbWxE9Hqa1shIyLeESYOcknUWEOOh4mv69f4eK37WES57me_eDU4f4wsQWHeaRe0KTU2xW/pub?gid=831161904&single=true&output=csv'; // 👈 把試算表的發佈 CSV URL 貼這裡
+
+  // CSV 欄位對應 (依你試算表的欄名修改,不分大小寫,可中文)
+  // 程式會依序找這些欄名,找到任一個就用,讓你的試算表欄名有彈性
+  const CSV_FIELDS = {
+    name:     ['遊戲名稱', '名稱', 'name', '品名'],
+    price:    ['清倉價', '清倉價格', '清倉價(滿千折百後)', '清倉價格(滿千折百後)', 'price', '售價'],
+    original: ['原價', '售價', '原售價', 'original', 'list price'],
+    discount: ['折數', '折扣', 'discount'],
+    stock:    ['庫存', '存量', 'stock', 'qty', 'quantity']
+  };
+
+  // 內建備援資料 (CSV 載入失敗時使用)
+  const FALLBACK_DATA = [
+    { name: "地城領主", price: 486, discount: 26 },
+    { name: "地城寵物", price: 486, discount: 28 },
+    { name: "古董局中局 平裝版", price: 387, discount: 29 },
+    { name: "恐龍島", price: 783, discount: 31 },
+    { name: "STAR WARS X-WING", price: 288, discount: 32 },
+    { name: "環遊世界80天", price: 486, discount: 37 },
+    { name: "鍛骰物語", price: 585, discount: 42 },
+    { name: "穿越歷史", price: 585, discount: 42 },
+    { name: "方格都市", price: 585, discount: 42 },
+    { name: "揭密希特勒", price: 882, discount: 43 },
+    { name: "眾神大典", price: 387, discount: 43 },
+    { name: "心靈圖解任務", price: 486, discount: 44 },
+    { name: "開心滑水梯樂園", price: 387, discount: 46 },
+    { name: "蝙蝠農家", price: 972, discount: 47 },
+    { name: "彩色島", price: 882, discount: 47 },
+    { name: "眾裏尋他", price: 387, discount: 49 },
+    { name: "星際大戰大挑戰", price: 486, discount: 49 },
+    { name: "重裝上陣:榮耀之戰(主遊戲)", price: 738, discount: 50 },
+    { name: "柴犬屋", price: 252, discount: 50 },
+    { name: "我的小小鐮刀", price: 882, discount: 50 },
+    { name: "動物們吃吃與便便", price: 252, discount: 51 },
+    { name: "怪獸骰塔", price: 252, discount: 51 },
+    { name: "星雲谷", price: 882, discount: 52 },
+    { name: "御石仙人傳", price: 585, discount: 52 },
+    { name: "關鍵物種-北美洲", price: 882, discount: 53 },
+    { name: "杯子蛋糕學院", price: 486, discount: 54 },
+    { name: "阿不思學院", price: 486, discount: 55 },
+    { name: "龍之吐息", price: 387, discount: 55 },
+    { name: "鏡像圍城", price: 387, discount: 55 },
+    { name: "特拉馬拉", price: 1170, discount: 56 },
+    { name: "精靈捕手", price: 387, discount: 56 },
+    { name: "釣魚好日子", price: 387, discount: 56 },
+    { name: "大腦益智盒:台灣", price: 387, discount: 56 },
+    { name: "心電感應", price: 387, discount: 56 },
+    { name: "瘟疫危機:隔離區北美", price: 486, discount: 57 },
+    { name: "機率大玩家", price: 288, discount: 58 },
+    { name: "大搜查 神話冒險", price: 783, discount: 58 },
+    { name: "大搜查 絕密冒險", price: 783, discount: 58 },
+    { name: "大搜查 異域冒險", price: 783, discount: 58 },
+    { name: "大搜查 史詩冒險", price: 783, discount: 58 },
+    { name: "從前從前-騎士精神", price: 288, discount: 59 },
+    { name: "從前從前-海洋冒險", price: 288, discount: 59 },
+    { name: "從前從前-魔法狂想", price: 288, discount: 59 },
+    { name: "禁閉凶間", price: 972, discount: 59 },
+    { name: "星球防衛者", price: 585, discount: 59 },
+    { name: "古董局中局 精裝版", price: 1467, discount: 59 },
+    { name: "狗戲團疊疊樂", price: 387, discount: 60 },
+    { name: "天際之塔", price: 387, discount: 60 },
+    { name: "隱形帽", price: 387, discount: 60 },
+    { name: "仙境夢遊(受潮)", price: 387, discount: 60 },
+    { name: "天痕決戰", price: 1467, discount: 62 },
+    { name: "瘟疫危機 快速反應", price: 882, discount: 63 },
+    { name: "卡片子彈 Re:LOAD", price: 288, discount: 64 },
+    { name: "喵10 Meow10", price: 288, discount: 64 },
+    { name: "音韻園鰻", price: 288, discount: 64 },
+    { name: "我的啦！OLENON", price: 288, discount: 64 },
+    { name: "生日快快樂-三麗鷗", price: 288, discount: 64 },
+    { name: "怪獸高塔", price: 450, discount: 64 },
+    { name: "埃及考古：新旅程", price: 387, discount: 65 },
+    { name: "知識線 動物篇", price: 387, discount: 65 },
+    { name: "山豬王", price: 252, discount: 65 },
+    { name: "得分城市", price: 486, discount: 65 },
+    { name: "星靈王座:星靈爭霸", price: 387, discount: 66 },
+    { name: "忍者之傲", price: 387, discount: 66 },
+    { name: "骰子工廠", price: 783, discount: 66 },
+    { name: "創世神界", price: 837, discount: 67 },
+    { name: "築夢頌", price: 972, discount: 67 },
+    { name: "風語花鄉", price: 1269, discount: 67 },
+    { name: "性格靈通：神話", price: 198, discount: 68 },
+    { name: "數字火車", price: 540, discount: 68 },
+    { name: "故事小Q:神秘篇", price: 288, discount: 69 },
+    { name: "搶答知識王 家庭版", price: 684, discount: 69 },
+    { name: "神秘導語", price: 684, discount: 69 },
+    { name: "天下無雙：傳奇之戰", price: 972, discount: 69 },
+    { name: "嗒寶 哈利波特", price: 387, discount: 70 },
+    { name: "幻想國度", price: 387, discount: 70 },
+    { name: "嗒寶：恐龍篇", price: 387, discount: 70 },
+    { name: "嗒寶 蜘蛛人", price: 387, discount: 70 },
+    { name: "七翻天", price: 387, discount: 70 },
+    { name: "殭屍棋", price: 486, discount: 70 },
+    { name: "粉墨登場", price: 486, discount: 70 },
+    { name: "五秒定律", price: 486, discount: 70 },
+    { name: "巧手猜圖", price: 1071, discount: 71 },
+    { name: "石來運轉", price: 486, discount: 71 },
+    { name: "超級無敵幸運星", price: 486, discount: 71 },
+    { name: "頭等艙列車", price: 1071, discount: 72 },
+    { name: "卡卡頌 冬季版+地圖擴2", price: 1368, discount: 72 },
+    { name: "控制中心臨界危機", price: 792, discount: 72 },
+    { name: "飛瀑樂園", price: 972, discount: 72 },
+    { name: "LEO獅子剪髮大冒險", price: 684, discount: 72 },
+    { name: "遺跡刮刮樂", price: 837, discount: 72 },
+    { name: "倉庫城", price: 1080, discount: 72 },
+    { name: "台灣製茶錄", price: 1269, discount: 73 },
+    { name: "忘憂繪卷 主遊戲", price: 936, discount: 73 },
+    { name: "環世80天", price: 936, discount: 73 },
+    { name: "塗鴉神諭", price: 585, discount: 73 },
+    { name: "字跡探險隊", price: 882, discount: 74 },
+    { name: "無雙對決：巫師 鋼劍與銀劍", price: 1179, discount: 74 },
+    { name: "三麗鷗翻翻樂", price: 288, discount: 74 },
+    { name: "小早川", price: 288, discount: 74 },
+    { name: "傻傻玩 台灣特有種版", price: 288, discount: 74 },
+    { name: "即刻出局", price: 288, discount: 74 },
+    { name: "迴轉壽司 Sushi go", price: 288, discount: 74 },
+    { name: "奶油還是派", price: 585, discount: 74 },
+    { name: "矮袋鼠小丁的巴士之旅", price: 585, discount: 74 },
+    { name: "狐獴胡蒙", price: 585, discount: 74 },
+    { name: "序列喵喵", price: 585, discount: 74 },
+    { name: "珍珠奶茶", price: 585, discount: 74 },
+    { name: "英雄愛唬爛", price: 585, discount: 74 },
+    { name: "傳情畫意 六人行", price: 585, discount: 74 },
+    { name: "妙語說書人 奧德賽 中文版", price: 882, discount: 74 },
+    { name: "草泥馬", price: 216, discount: 74 },
+    { name: "天下鳴動", price: 882, discount: 75 },
+    { name: "全力揮擊", price: 882, discount: 75 },
+    { name: "超感官同步", price: 486, discount: 75 },
+    { name: "皇冠拉米牌", price: 486, discount: 75 },
+    { name: "神探緝兇2", price: 486, discount: 75 },
+    { name: "驚爆倫敦", price: 486, discount: 75 },
+    { name: "鯨融街", price: 972, discount: 75 },
+    { name: "蟑螂捕手", price: 1269, discount: 75 },
+    { name: "醉闖地城", price: 1566, discount: 75 },
+    { name: "聖瓦西里大教堂", price: 972, discount: 76 },
+    { name: "火線任務 - 閃燃瞬間", price: 972, discount: 76 },
+    { name: "超級魔王地下城", price: 972, discount: 76 },
+    { name: "拉密XP 6人版", price: 972, discount: 76 },
+    { name: "我是香蕉", price: 450, discount: 76 },
+    { name: "逆流上班族", price: 450, discount: 76 },
+    { name: "種豆 2017版", price: 450, discount: 76 },
+    { name: "梭哈", price: 450, discount: 76 },
+    { name: "亡者神抽", price: 450, discount: 76 },
+    { name: "雙面特務", price: 450, discount: 76 },
+    { name: "UNO 麥塊(當個創世神)", price: 252, discount: 77 },
+    { name: "UNO瑪利歐", price: 252, discount: 77 },
+    { name: "UNO星際寶貝", price: 252, discount: 77 },
+    { name: "UNO PIXAR皮克斯", price: 252, discount: 77 },
+    { name: "UNO 瑪利歐", price: 252, discount: 77 },
+    { name: "筷餵小鳥", price: 684, discount: 77 },
+    { name: "幸運轉！轉！轉！", price: 684, discount: 77 },
+    { name: "籤籤入扣", price: 684, discount: 77 },
+    { name: "多數派", price: 684, discount: 77 },
+    { name: "瞎掰王 看圖掰", price: 684, discount: 77 },
+    { name: "五秒定律:接力好棒棒", price: 684, discount: 77 },
+    { name: "估估劃劃", price: 684, discount: 77 },
+    { name: "5211:花磚密語特別版", price: 387, discount: 77 },
+    { name: "嗒寶 哆啦A夢", price: 387, discount: 77 },
+    { name: "情書 無限手套", price: 387, discount: 77 },
+    { name: "詭陣奇談 克蘇魯情書", price: 387, discount: 77 },
+    { name: "嗒寶 中文版", price: 387, discount: 77 },
+    { name: "禮賀台灣", price: 387, discount: 77 },
+    { name: "沉睡皇后周年版+擴充包", price: 387, discount: 77 },
+    { name: "馬可波羅2-可汗的託付", price: 1467, discount: 78 },
+    { name: "爆炸貓桌遊", price: 738, discount: 78 },
+    { name: "推倒提基20周年版", price: 684, discount: 78 },
+    { name: "密弒派對", price: 684, discount: 78 },
+    { name: "花磚密語", price: 972, discount: 78 },
+    { name: "神秘大地 大創造時代", price: 2250, discount: 78 },
+    { name: "爆炸貓 R18版", price: 585, discount: 78 },
+    { name: "字字轉機", price: 351, discount: 78 },
+    { name: "骰子街", price: 585, discount: 78 },
+    { name: "狐夏", price: 351, discount: 78 },
+    { name: "瘟疫危機 中文版", price: 1134, discount: 78 },
+    { name: "眨眨眼 8人中文版", price: 540, discount: 78 },
+    { name: "奧秘小隊", price: 540, discount: 78 },
+    { name: "血與刃的白薔薇", price: 540, discount: 78 },
+    { name: "卡坦島25週年紀念版", price: 2349, discount: 79 },
+    { name: "拔毛運動會", price: 936, discount: 79 },
+    { name: "SET有形有色", price: 387, discount: 79 },
+    { name: "得寸進尺", price: 387, discount: 79 },
+    { name: "SEVEN 中文版", price: 387, discount: 79 },
+    { name: "甩鍋大王", price: 387, discount: 79 },
+    { name: "力爭上游", price: 387, discount: 79 },
+    { name: "瘋狂數字環(防水版)", price: 387, discount: 79 },
+    { name: "回憶三重奏", price: 387, discount: 79 },
+    { name: "情書中文美版", price: 387, discount: 79 },
+    { name: "搞笑瑜珈", price: 387, discount: 79 },
+    { name: "目擊者之夜", price: 387, discount: 79 },
+    { name: "幕後交易", price: 387, discount: 79 },
+    { name: "水瓶座 中文版", price: 387, discount: 79 },
+    { name: "香蕉保衛戰", price: 387, discount: 79 },
+    { name: "靈光同線(心靈同步)", price: 387, discount: 79 },
+    { name: "找電影", price: 387, discount: 79 },
+    { name: "邏輯對決 新版", price: 387, discount: 79 },
+    { name: "海王.舔狗.對的人 成人版", price: 387, discount: 79 },
+    { name: "海王.舔狗.對的人", price: 387, discount: 79 },
+    { name: "誰是牛頭王", price: 387, discount: 79 },
+    { name: "花火 鐵盒版", price: 387, discount: 79 },
+    { name: "字字轉機-臉紅心跳", price: 387, discount: 79 },
+    { name: "試個好遊戲", price: 387, discount: 79 },
+    { name: "限時解鎖 密室逃脫", price: 783, discount: 79 },
+    { name: "蟲蟲燒烤豪門派對", price: 783, discount: 79 },
+    { name: "步步為營", price: 783, discount: 79 },
+    { name: "伊斯坦堡 骰子版", price: 783, discount: 79 },
+    { name: "閃靈快手魔法帽英文版(附中文說明書)", price: 783, discount: 79 },
+    { name: "誰是牛頭王 豪華版", price: 783, discount: 79 },
+    { name: "砰！BANG!", price: 783, discount: 79 },
+    { name: "非洲之旅", price: 783, discount: 79 },
+    { name: "紅龍酒店", price: 783, discount: 79 },
+    { name: "割喉冒險隊", price: 783, discount: 79 },
+    { name: "駱駝大賽 2020版", price: 1179, discount: 79 },
+    { name: "卡牌宿舍(無折扣品)", price: 1332, discount: 79 },
+    { name: "坐以待斃", price: 540, discount: 79 },
+    { name: "伊斯坦堡 大盒版", price: 1665, discount: 80 },
+    { name: "農家樂 (2021新版)", price: 1665, discount: 80 },
+    { name: "麻雀麵", price: 351, discount: 80 },
+    { name: "估估劃劃：嗨起來", price: 783, discount: 80 },
+    { name: "動物全世界", price: 882, discount: 80 },
+    { name: "命運之塔(無折扣品)", price: 1269, discount: 80 },
+    { name: "拼布對決 情人節 英文版", price: 684, discount: 80 },
+    { name: "拉密變臉 鐵盒版", price: 684, discount: 80 },
+    { name: "骰子守護者(無折扣品)", price: 477, discount: 81 },
+    { name: "無間風雲─大全套", price: 639, discount: 81 },
+    { name: "德國心臟病-極限版", price: 639, discount: 81 },
+    { name: "德國心臟病眼花手亂版", price: 639, discount: 81 },
+    { name: "蟲蟲燒烤派對", price: 639, discount: 81 },
+    { name: "達尼的次人格", price: 639, discount: 81 },
+    { name: "狼爾街風雲", price: 639, discount: 81 },
+    { name: "腦洞量表沒有下限", price: 639, discount: 81 },
+    { name: "卡牌之家(無折扣品)", price: 639, discount: 81 },
+    { name: "腦洞量表：大冒險", price: 639, discount: 81 },
+    { name: "妙語說書人 6人版", price: 882, discount: 81 },
+    { name: "皇家港大盒版", price: 882, discount: 81 },
+    { name: "和諧之森", price: 972, discount: 81 },
+    { name: "新版東京之王", price: 972, discount: 81 },
+    { name: "UNO 大格鬥", price: 972, discount: 81 },
+    { name: "爆炸貓", price: 585, discount: 81 },
+    { name: "禁制之島 Forbidden Island", price: 585, discount: 81 },
+    { name: "熱力狂飆", price: 1953, discount: 81 },
+    { name: "傳情畫意", price: 1134, discount: 82 },
+    { name: "瞎掰王 樸素桌迷藏ver.", price: 882, discount: 82 },
+    { name: "13道線索", price: 972, discount: 82 },
+    { name: "紙牌幫", price: 450, discount: 82 },
+    { name: "巫師昆特牌：傳奇之戰", price: 1269, discount: 82 },
+    { name: "星際探險隊", price: 486, discount: 82 },
+    { name: "種豆英中版", price: 486, discount: 82 },
+    { name: "德國蟑螂 皇家版", price: 486, discount: 82 },
+    { name: "天合小隊", price: 783, discount: 82 },
+    { name: "形色叩叩", price: 783, discount: 82 },
+    { name: "拉密袋裝版", price: 783, discount: 82 },
+    { name: "拉密 變臉版(柱狀盒)", price: 783, discount: 82 },
+    { name: "UNO 毫不留情(no mercy)", price: 387, discount: 83 },
+    { name: "烏邦果3D家庭版", price: 1233, discount: 83 },
+    { name: "降妖伏怪", price: 243, discount: 84 },
+    { name: "鼠國稱王", price: 243, discount: 84 },
+    { name: "可可亞", price: 882, discount: 84 },
+    { name: "星際探險隊 深海任務", price: 585, discount: 85 },
+    { name: "搖擺快找王", price: 585, discount: 85 },
+    { name: "巫師：命運之路基本遊戲(豪華模型版)＋美女與野獸擴充", price: 2115, discount: 62 },
+    { name: "巫師：命運之路狼人獨立遊玩遊戲(豪華模型版)", price: 1620, discount: 68 },
+    { name: "雅典衛城基本遊戲+雅典娜擴充", price: 1080, discount: 72 },
+    { name: "大西部開拓者：阿根廷", price: 801, discount: 45 },
+    { name: "皂單全收", price: 180, discount: 40 },
+    { name: "巫師：命運之路 狂獵+傳奇怪物+納吉爾法+蘑菇擴充", price: 1890, discount: 63 },
+    { name: "巫師：命運之路 集資解鎖大盒", price: 3150, discount: 63 }
+  ];
+
+  // 動態資料容器 (從 CSV 載入或使用備援)
+  let DATA = [];
+  let DATA_SOURCE = 'fallback'; // 'csv' | 'fallback'
+  let LAST_UPDATED = null;
+
+  // ====== CSV 載入與解析 ======
+
+  // 解析 CSV (支援雙引號包字、跳脫、CRLF)
+  function parseCSV(text) {
+    const rows = [];
+    let row = [], field = '', inQuote = false;
+    for (let i = 0; i < text.length; i++) {
+      const c = text[i], n = text[i + 1];
+      if (inQuote) {
+        if (c === '"' && n === '"') { field += '"'; i++; }
+        else if (c === '"') { inQuote = false; }
+        else { field += c; }
+      } else {
+        if (c === '"') { inQuote = true; }
+        else if (c === ',') { row.push(field); field = ''; }
+        else if (c === '\r') { /* skip */ }
+        else if (c === '\n') { row.push(field); rows.push(row); row = []; field = ''; }
+        else { field += c; }
+      }
+    }
+    if (field.length > 0 || row.length > 0) { row.push(field); rows.push(row); }
+    return rows.filter(r => r.length > 0 && r.some(c => c.trim() !== ''));
+  }
+
+  // 從多欄候選中找出第一個存在於 header 的 index
+  function findCol(headers, candidates) {
+    const lower = headers.map(h => (h || '').toString().trim().toLowerCase());
+    for (const cand of candidates) {
+      const i = lower.indexOf(cand.toLowerCase());
+      if (i !== -1) return i;
+    }
+    return -1;
+  }
+
+  // 從 CSV rows 解析出商品資料
+  function rowsToItems(rows) {
+    if (rows.length < 2) return [];
+
+    // 清理欄名:移除 Google Sheets 合併儲存格的標題前綴 (如 "所有新品.../遊戲名稱" → "遊戲名稱")
+    const cleanHeader = h => {
+      if (h == null) return '';
+      let s = String(h).trim();
+      // 移除「.../xxx」前綴 (試算表合併欄位常見)
+      const slashIdx = s.lastIndexOf('/');
+      if (slashIdx !== -1 && slashIdx < s.length - 1) s = s.substring(slashIdx + 1).trim();
+      return s;
+    };
+
+    // 嘗試找出標題列 (含有「名稱」或 "name" 的列)
+    let headerIdx = -1;
+    for (let i = 0; i < Math.min(rows.length, 10); i++) {
+      const joined = rows[i].map(cleanHeader).join(',').toLowerCase();
+      if (joined.includes('名稱') || joined.includes('遊戲') || joined.includes('name')) {
+        headerIdx = i;
+        break;
+      }
+    }
+    if (headerIdx === -1) headerIdx = 0;
+
+    const rawHeaders = rows[headerIdx];
+    const headers = rawHeaders.map(cleanHeader);
+
+    // 找出所有「遊戲名稱」與「清倉價」欄位 (試算表可能有左右雙欄佈局)
+    const findAllCols = (candidates) => {
+      const lowered = candidates.map(c => c.toLowerCase());
+      return headers.map((h, i) => lowered.includes(h.toLowerCase()) ? i : -1)
+                    .filter(i => i !== -1);
+    };
+
+    const nameCols = findAllCols(CSV_FIELDS.name);
+    const priceCols = findAllCols(CSV_FIELDS.price);
+    const origCols = findAllCols(CSV_FIELDS.original);
+    const discCols = findAllCols(CSV_FIELDS.discount);
+    const stockCols = findAllCols(CSV_FIELDS.stock);
+
+    if (nameCols.length === 0 || priceCols.length === 0) {
+      console.warn('CSV 欄位偵測失敗', { headers, rawHeaders });
+      return [];
+    }
+
+    // 把左右兩半的資料配對:nameCols[k] 對應 priceCols[k], stockCols[k]...
+    // 若左右欄數不對等,以較少的為主
+    const pairs = Math.min(nameCols.length, priceCols.length);
+
+    const cleanNum = v => {
+      if (v == null) return NaN;
+      const cleaned = String(v).replace(/[,\s$NT元]/g, '').replace(/%$/, '');
+      return parseFloat(cleaned);
+    };
+
+    const items = [];
+    const seen = new Set();
+
+    for (let i = headerIdx + 1; i < rows.length; i++) {
+      const r = rows[i];
+
+      for (let k = 0; k < pairs; k++) {
+        const name = (r[nameCols[k]] || '').toString().trim();
+        if (!name) continue;
+        const price = cleanNum(r[priceCols[k]]);
+        if (!isFinite(price) || price <= 0) continue;
+
+        // 庫存
+        let stock = -1;
+        if (stockCols[k] !== undefined) {
+          const raw = (r[stockCols[k]] || '').toString().trim();
+          if (raw === '') stock = -1;
+          else stock = cleanNum(raw);
+          if (!isFinite(stock)) stock = -1;
+        }
+
+        // 折扣
+        let discount = NaN;
+        if (discCols[k] !== undefined) {
+          discount = cleanNum(r[discCols[k]]);
+          if (discount < 1) discount = Math.round(discount * 100);
+        }
+        if (!isFinite(discount) && origCols[k] !== undefined) {
+          const orig = cleanNum(r[origCols[k]]);
+          if (isFinite(orig) && orig > 0) discount = Math.round((price / orig) * 100);
+        }
+        if (!isFinite(discount)) discount = 100;
+
+        // 去重 (左右欄可能有重複品項)
+        const key = name + '|' + price;
+        if (seen.has(key)) continue;
+        seen.add(key);
+
+        items.push({ name, price: Math.round(price), discount, stock });
+      }
+    }
+    return items;
+  }
+
+  async function loadCSV() {
+    if (!CSV_URL) {
+      console.info('未設定 CSV_URL,使用內建備援資料');
+      return null;
+    }
+
+    // 偵測本機 file:// 開啟 (常見問題)
+    if (location.protocol === 'file:') {
+      const msg = 'file:// 本機開啟會被瀏覽器擋住 fetch';
+      console.warn('⚠️ ' + msg + ',改用備援資料。請用 http://localhost 或部署到網路上');
+      window.__CSV_ERR__ = msg;
+      return null;
+    }
+
+    try {
+      const url = CSV_URL + (CSV_URL.includes('?') ? '&' : '?') + '_t=' + Date.now();
+      const res = await fetch(url, { mode: 'cors' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const text = await res.text();
+      const rows = parseCSV(text);
+      const items = rowsToItems(rows);
+      if (items.length === 0) throw new Error('CSV 解析後沒有有效資料');
+      console.info('✅ 從試算表載入 ' + items.length + ' 項');
+      return items;
+    } catch (e) {
+      console.error('CSV 載入失敗,退回備援資料:', e);
+      window.__CSV_ERR__ = e.message || String(e);
+      return null;
+    }
+  }
+
+  // ====== STATE & DOM ======
+  const grid = document.getElementById('grid');
+  const searchEl = document.getElementById('search');
+  const sortEl = document.getElementById('sort');
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const visibleCountEl = document.getElementById('visible-count');
+
+  let currentFilter = 'all';
+  let currentSort = 'discount-asc';
+  let currentSearch = '';
+
+  // ====== STATS ======
+  function renderStats() {
+    // 統計只看有庫存的品項 (與顯示一致)
+    const live = DATA.filter(d => d.stock !== 0);
+    if (live.length === 0) {
+      ['stat-count', 'stat-min', 'stat-cheap', 'stat-avg'].forEach(id =>
+        document.getElementById(id).innerHTML = '—'
+      );
+      return;
+    }
+    document.getElementById('stat-count').innerHTML = live.length;
+    const minD = Math.min(...live.map(d => d.discount));
+    document.getElementById('stat-min').innerHTML = (minD / 10).toFixed(1) + '<small>折</small>';
+    const minP = Math.min(...live.map(d => d.price));
+    document.getElementById('stat-cheap').innerHTML = minP;
+    const avgD = live.reduce((s, d) => s + d.discount, 0) / live.length;
+    document.getElementById('stat-avg').innerHTML = (avgD / 10).toFixed(1) + '<small>折</small>';
+  }
+
+  // ====== TIER LOGIC ======
+  function tier(d) {
+    if (d <= 50) return 'hot';
+    if (d <= 70) return 'warm';
+    if (d <= 80) return 'mild';
+    return 'light';
+  }
+
+  function tierLabel(t) {
+    return { hot: '🔥', warm: '◆', mild: '◇', light: '·' }[t];
+  }
+
+  // ====== RENDER ======
+  function render() {
+    const search = currentSearch.trim().toLowerCase();
+    let items = DATA.filter(d => {
+      if (d.stock === 0) return false;  // 🔑 庫存 0 不顯示
+      if (currentFilter !== 'all' && tier(d.discount) !== currentFilter) return false;
+      if (search && !d.name.toLowerCase().includes(search)) return false;
+      return true;
+    });
+
+    // sort
+    items.sort((a, b) => {
+      switch (currentSort) {
+        case 'discount-asc': return a.discount - b.discount;
+        case 'discount-desc': return b.discount - a.discount;
+        case 'price-asc': return a.price - b.price;
+        case 'price-desc': return b.price - a.price;
+        case 'name': return a.name.localeCompare(b.name, 'zh-Hant');
+      }
+    });
+
+    visibleCountEl.textContent = `顯示中 / ${items.length} 項 共 ${DATA.length} 項`;
+
+    if (items.length === 0) {
+      grid.innerHTML = '<div class="empty">找不到符合的桌遊 ⋯⋯ 換個關鍵字試試?</div>';
+      return;
+    }
+
+    grid.innerHTML = items.map((d, i) => {
+      const t = tier(d.discount);
+      const dispDiscount = (d.discount / 10).toFixed(1);
+      const searchQuery = encodeURIComponent(d.name + ' 桌遊');
+      const googleImgUrl = `https://www.google.com/search?tbm=isch&q=${searchQuery}`;
+      const initials = (d.name.match(/[\u4e00-\u9fff]/g) || ['?']).slice(0, 2).join('');
+      const bingQuery = encodeURIComponent(d.name + ' 桌遊');
+      const imgUrl = `https://tse1.mm.bing.net/th?q=${bingQuery}&w=400&h=260&c=7&rs=1&p=0&o=6&pid=1.7&mkt=zh-TW&cc=TW`;
+
+      // 庫存提示:1-3 套 = 急迫紅、4-5 = 提示金、6+ 或未知 = 不顯示
+      let stockBadge = '';
+      if (d.stock > 0 && d.stock <= 3) {
+        stockBadge = `<span class="stock-badge urgent">剩 ${d.stock} 套</span>`;
+      } else if (d.stock > 0 && d.stock <= 5) {
+        stockBadge = `<span class="stock-badge low">剩 ${d.stock} 套</span>`;
+      }
+
+      return `
+        <a href="${googleImgUrl}" target="_blank" rel="noopener" class="card" style="animation-delay: ${Math.min(i * 15, 600)}ms">
+          <div class="card-image">
+            <div class="card-image-placeholder">${escapeHtml(initials)}</div>
+            <img src="${imgUrl}" alt="${escapeHtml(d.name)}" loading="lazy" referrerpolicy="no-referrer">
+            <span class="external-icon">↗ 看更多圖</span>
+            ${stockBadge}
+          </div>
+          <div class="card-header">
+            <h3 class="card-name">${escapeHtml(d.name)}</h3>
+            <span class="discount-badge ${t}">${dispDiscount}折</span>
+          </div>
+          <div class="card-body">
+            <div class="price-row">
+              <div>
+                <div class="price-final">${d.price.toLocaleString()}</div>
+                <div class="savings">滿千折百後 · ${tierLabel(t)} ${labelFor(t)}</div>
+              </div>
+            </div>
+          </div>
+        </a>
+      `;
+    }).join('');
+
+    // 圖片載入完成後淡入
+    grid.querySelectorAll('img').forEach(img => {
+      if (img.complete && img.naturalWidth > 0) {
+        img.classList.add('loaded');
+      } else {
+        img.addEventListener('load', () => {
+          // 過濾掉 Bing 的「無結果」預設灰圖 (通常 < 80x80)
+          if (img.naturalWidth < 100 || img.naturalHeight < 80) {
+            img.remove();
+          } else {
+            img.classList.add('loaded');
+          }
+        }, { once: true });
+        img.addEventListener('error', () => img.remove(), { once: true });
+      }
+    });
+  }
+
+  function labelFor(t) {
+    return { hot: '骨折特惠', warm: '深度折扣', mild: '熱門折扣', light: '出清優惠' }[t];
+  }
+
+  function escapeHtml(s) {
+    return s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
+  // ====== EVENTS ======
+  searchEl.addEventListener('input', e => { currentSearch = e.target.value; render(); });
+  sortEl.addEventListener('change', e => { currentSort = e.target.value; render(); });
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentFilter = btn.dataset.filter;
+      render();
+    });
+  });
+
+  // ====== INIT ======
+  async function init() {
+    // 顯示載入中狀態
+    grid.innerHTML = '<div class="empty">正在載入庫存資料 ⋯⋯</div>';
+
+    // 先嘗試從 CSV 載入
+    const csvItems = await loadCSV();
+    if (csvItems && csvItems.length > 0) {
+      // 為 CSV 資料補上一份預設 stock (若沒抓到)
+      DATA = csvItems;
+      DATA_SOURCE = 'csv';
+      LAST_UPDATED = new Date();
+    } else {
+      // CSV 失敗 → 使用備援資料 (假設都有庫存,stock = -1)
+      DATA = FALLBACK_DATA.map(d => ({ ...d, stock: -1 }));
+      DATA_SOURCE = 'fallback';
+    }
+
+    // 更新「資料來源」狀態列
+    updateSourceStatus();
+    renderStats();
+    render();
+  }
+
+  function updateSourceStatus() {
+    const el = document.getElementById('source-status');
+    if (!el) return;
+    if (DATA_SOURCE === 'csv') {
+      const t = LAST_UPDATED ? LAST_UPDATED.toLocaleString('zh-TW', { hour12: false }) : '';
+      el.innerHTML = `LIVE · 試算表同步 <span class="dot live"></span> <small>${t}</small>`;
+      el.className = 'source-status live';
+    } else {
+      const err = window.__CSV_ERR__ || '';
+      let hint = '';
+      if (location.protocol === 'file:') {
+        hint = ' <small style="color:#ff9966">⚠ 請用本機伺服器開啟 (見下方說明)</small>';
+      } else if (err) {
+        hint = ` <small>${escapeHtml(err)}</small>`;
+      }
+      el.innerHTML = `OFFLINE · 內建資料 <span class="dot offline"></span>${hint}`;
+      el.className = 'source-status offline';
+    }
+  }
+
+  init();
+</script>
+
+</body>
+</html>
