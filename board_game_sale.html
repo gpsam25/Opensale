@@ -874,8 +874,8 @@
     <div class="stat-label">Lowest · 最低折扣</div>
   </div>
   <div class="stat">
-    <span class="stat-num" id="stat-cheap">—</span>
-    <div class="stat-label">From · 最低價格 NT$</div>
+    <span class="stat-num" id="stat-stock">—</span>
+    <div class="stat-label">In Stock · 剩餘庫存</div>
   </div>
   <div class="stat">
     <span class="stat-num" id="stat-avg">—<small>折</small></span>
@@ -1396,16 +1396,18 @@
     // 統計只看有庫存的品項 (與顯示一致)
     const live = DATA.filter(d => d.stock !== 0);
     if (live.length === 0) {
-      ['stat-count', 'stat-min', 'stat-cheap', 'stat-avg'].forEach(id =>
+      ['stat-count', 'stat-min', 'stat-stock', 'stat-avg'].forEach(id =>
         document.getElementById(id).innerHTML = '—'
       );
       return;
     }
-    document.getElementById('stat-count').innerHTML = live.length;
+    document.getElementById('stat-count').innerHTML = DATA.length;
     const minD = Math.min(...live.map(d => d.discount));
     document.getElementById('stat-min').innerHTML = (minD / 10).toFixed(1) + '<small>折</small>';
-    const minP = Math.min(...live.map(d => d.price));
-    document.getElementById('stat-cheap').innerHTML = minP;
+    // 庫存加總：只計算有明確填數字的品項 (stock >= 0)，stock = -1 表示未知略過
+    const stockItems = DATA.filter(d => d.stock >= 0);
+    const totalStock = stockItems.reduce((s, d) => s + d.stock, 0);
+    document.getElementById('stat-stock').innerHTML = stockItems.length > 0 ? totalStock : '—';
     document.getElementById('stat-avg').innerHTML = '6.7<small>折</small>';
   }
 
