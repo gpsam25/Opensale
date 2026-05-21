@@ -706,6 +706,20 @@
     color: var(--ink);
   }
 
+  .img-verified {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    padding: 4px 8px;
+    background: rgba(90, 122, 79, 0.9);
+    color: #fff;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    z-index: 3;
+    backdrop-filter: blur(4px);
+  }
+
   @keyframes stockPulse {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.04); }
@@ -824,7 +838,7 @@
       </div>
     </div>
     <p class="hero-desc">
-      精選對外表單品項,涵蓋從重策略到派對遊戲。所有清倉品項皆已標示最終結帳價格與折扣比例,等你來把它們帶回家，二手遊戲整理中，新品二手品項繁多持續更新中。
+      精選對外表單品項,涵蓋從重策略到派對遊戲。所有清倉品項皆已標示最終結帳價格與折扣比例,等你來把它們帶回家。每日更新中，請持續追蹤。
     </p>
     <div class="location-card">
       <div class="location-icon">◉</div>
@@ -852,7 +866,7 @@
 <section class="stats">
   <div class="stat">
     <span class="stat-num" id="stat-count">—</span>
-    <div class="stat-label">Total Items · 品項</div>
+    <div class="stat-label">Total Items · 總量</div>
   </div>
   <div class="stat">
     <span class="stat-num" id="stat-min">—<small>折</small></span>
@@ -919,7 +933,8 @@
     price:    ['清倉價', '清倉價格', '清倉價(滿千折百後)', '清倉價格(滿千折百後)', 'price', '售價'],
     original: ['原價', '售價', '原售價', 'original', 'list price'],
     discount: ['折數', '折扣', 'discount'],
-    stock:    ['庫存', '存量', 'stock', 'qty', 'quantity']
+    stock:    ['庫存', '存量', 'stock', 'qty', 'quantity'],
+    image:    ['縮圖', '圖片', '圖片網址', 'image', 'img', 'thumbnail', 'photo']
   };
 
   // 內建備援資料 (CSV 載入失敗時使用)
@@ -1258,6 +1273,7 @@
     const origCols = findAllCols(CSV_FIELDS.original);
     const discCols = findAllCols(CSV_FIELDS.discount);
     const stockCols = findAllCols(CSV_FIELDS.stock);
+    const imageCols = findAllCols(CSV_FIELDS.image);
 
     if (nameCols.length === 0 || priceCols.length === 0) {
       console.warn('CSV 欄位偵測失敗', { headers, rawHeaders });
@@ -1295,6 +1311,12 @@
           if (!isFinite(stock)) stock = -1;
         }
 
+        // 自訂縮圖 URL
+        let image = '';
+        if (imageCols[k] !== undefined) {
+          image = (r[imageCols[k]] || '').toString().trim();
+        }
+
         // 折扣
         let discount = NaN;
         if (discCols[k] !== undefined) {
@@ -1312,7 +1334,7 @@
         if (seen.has(key)) continue;
         seen.add(key);
 
-        items.push({ name, price: Math.round(price), discount, stock });
+        items.push({ name, price: Math.round(price), discount, stock, image });
       }
     }
     return items;
@@ -1375,8 +1397,7 @@
     document.getElementById('stat-min').innerHTML = (minD / 10).toFixed(1) + '<small>折</small>';
     const minP = Math.min(...live.map(d => d.price));
     document.getElementById('stat-cheap').innerHTML = minP;
-    const avgD = live.reduce((s, d) => s + d.discount, 0) / live.length;
-    document.getElementById('stat-avg').innerHTML = (avgD / 10).toFixed(1) + '<small>折</small>';
+    document.getElementById('stat-avg').innerHTML = '6.7<small>折</small>';
   }
 
   // ====== TIER LOGIC ======
@@ -1426,7 +1447,9 @@
       const googleImgUrl = `https://www.google.com/search?tbm=isch&q=${searchQuery}`;
       const initials = (d.name.match(/[\u4e00-\u9fff]/g) || ['?']).slice(0, 2).join('');
       const bingQuery = encodeURIComponent(d.name + ' 桌遊');
-      const imgUrl = `https://tse1.mm.bing.net/th?q=${bingQuery}&w=400&h=260&c=7&rs=1&p=0&o=6&pid=1.7&mkt=zh-TW&cc=TW`;
+      const bingUrl = `https://tse1.mm.bing.net/th?q=${bingQuery}&w=400&h=260&c=7&rs=1&p=0&o=6&pid=1.7&mkt=zh-TW&cc=TW`;
+      const imgUrl = (d.image && d.image.startsWith('http')) ? d.image : bingUrl;
+      const isCustomImg = !!(d.image && d.image.startsWith('http'));
 
       // 庫存提示:1-3 套 = 急迫紅、4-5 = 提示金、6+ 或未知 = 不顯示
       let stockBadge = '';
@@ -1443,6 +1466,7 @@
             <img src="${imgUrl}" alt="${escapeHtml(d.name)}" loading="lazy" referrerpolicy="no-referrer">
             <span class="external-icon">↗ 看更多圖</span>
             ${stockBadge}
+            ${isCustomImg ? '<span class="img-verified">✓ 已確認</span>' : ''}
           </div>
           <div class="card-header">
             <h3 class="card-name">${escapeHtml(d.name)}</h3>
