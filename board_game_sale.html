@@ -315,7 +315,7 @@
     margin: 0 auto;
     padding: 40px;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 0;
     border-bottom: 1px solid var(--line);
   }
@@ -796,6 +796,7 @@
     .stat { padding: 0 16px; }
     .stat:nth-child(2) { border-right: none; }
     .stat:nth-child(3) { padding-left: 0; }
+    .stat:nth-child(5) { grid-column: 1 / -1; border-right: none; border-top: 1px solid var(--line); padding-top: 20px; text-align: center; }
     .controls { padding: 20px; }
     main { padding: 24px 20px; }
     .grid { grid-template-columns: 1fr; }
@@ -838,7 +839,7 @@
       </div>
     </div>
     <p class="hero-desc">
-      精選對外表單品項,涵蓋從重策略到派對遊戲。所有清倉品項皆已標示最終結帳價格與折扣比例,等你來把它們帶回家。每日更新中，請持續追蹤。
+      精選對外表單品項,涵蓋從重策略到派對遊戲。所有清倉品項皆已標示最終結帳價格與折扣比例,等你來把它們帶回家。
     </p>
     <div class="location-card">
       <div class="location-icon">◉</div>
@@ -879,6 +880,14 @@
   <div class="stat">
     <span class="stat-num" id="stat-avg">—<small>折</small></span>
     <div class="stat-label">Average · 平均折扣</div>
+  </div>
+  <div class="stat">
+    <span class="stat-num" id="stat-views">
+      <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgpsam25.github.io%2FOpensale%2Fboard_game_sale.html&count_bg=%23C9A961&title_bg=%230F1410&icon=&icon_color=%23C9A961&title=&edge_flat=true"
+           alt="瀏覽次數"
+           style="height:44px; margin-top:6px; vertical-align:middle;">
+    </span>
+    <div class="stat-label">Page Views · 累計瀏覽</div>
   </div>
 </section>
 
