@@ -888,7 +888,7 @@
 <section class="stats">
   <div class="stat">
     <span class="stat-num" id="stat-count">—</span>
-    <div class="stat-label">Total Items · 總量</div>
+    <div class="stat-label">Total Stock · 總量</div>
   </div>
   <div class="stat">
     <span class="stat-num" id="stat-min">—<small>折</small></span>
@@ -896,7 +896,7 @@
   </div>
   <div class="stat">
     <span class="stat-num" id="stat-stock">—</span>
-    <div class="stat-label">In Stock · 剩餘庫存</div>
+    <div class="stat-label">Items · 品項數</div>
   </div>
   <div class="stat">
     <span class="stat-num" id="stat-avg">—<small>折</small></span>
@@ -1420,13 +1420,24 @@
       );
       return;
     }
-    document.getElementById('stat-count').innerHTML = DATA.length;
-    const minD = Math.min(...live.map(d => d.discount));
-    document.getElementById('stat-min').innerHTML = (minD / 10).toFixed(1) + '<small>折</small>';
-    // 庫存加總：只計算有明確填數字的品項 (stock >= 0)，stock = -1 表示未知略過
+    // 庫存加總
     const stockItems = DATA.filter(d => d.stock >= 0);
     const totalStock = stockItems.reduce((s, d) => s + d.stock, 0);
-    document.getElementById('stat-stock').innerHTML = stockItems.length > 0 ? totalStock : '—';
+
+    // 🔍 診斷輸出
+    console.log('📊 統計診斷:');
+    console.log('  - 全部品項數 (DATA.length):', DATA.length);
+    console.log('  - 有讀到庫存數字的品項:', stockItems.length);
+    console.log('  - 庫存加總:', totalStock);
+    console.log('  - 沒填庫存的品項 (前5筆):',
+      DATA.filter(d => d.stock < 0).slice(0, 5).map(d => d.name));
+    console.log('  - 有填庫存的品項 (前5筆):',
+      stockItems.slice(0, 5).map(d => `${d.name}: ${d.stock}`));
+
+    document.getElementById('stat-count').innerHTML = stockItems.length > 0 ? totalStock : DATA.length;
+    const minD = Math.min(...live.map(d => d.discount));
+    document.getElementById('stat-min').innerHTML = (minD / 10).toFixed(1) + '<small>折</small>';
+    document.getElementById('stat-stock').innerHTML = DATA.length;
     document.getElementById('stat-avg').innerHTML = '6.7<small>折</small>';
   }
 
