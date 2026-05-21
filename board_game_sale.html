@@ -346,6 +346,27 @@
     margin-left: 4px;
   }
 
+  .stat-counter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .stat-counter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .hits-badge {
+    display: block;
+    height: 40px;
+    width: auto;
+    max-width: 100%;
+  }
+
   .stat-label {
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
@@ -881,12 +902,10 @@
     <span class="stat-num" id="stat-avg">—<small>折</small></span>
     <div class="stat-label">Average · 平均折扣</div>
   </div>
-  <div class="stat">
-    <span class="stat-num" id="stat-views">
-      <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgpsam25.github.io%2FOpensale%2Fboard_game_sale.html&count_bg=%23C9A961&title_bg=%230F1410&icon=&icon_color=%23C9A961&title=&edge_flat=true"
-           alt="瀏覽次數"
-           style="height:44px; margin-top:6px; vertical-align:middle;">
-    </span>
+  <div class="stat stat-counter">
+    <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgpsam25.github.io%2FOpensale%2Fboard_game_sale.html&count_bg=%23C9A961&title_bg=%230F1410&icon=&icon_color=%23C9A961&title=&edge_flat=true"
+         alt="瀏覽次數"
+         class="hits-badge">
     <div class="stat-label">Page Views · 累計瀏覽</div>
   </div>
 </section>
