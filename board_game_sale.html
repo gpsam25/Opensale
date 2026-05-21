@@ -1344,6 +1344,8 @@
         let image = '';
         if (imageCols[k] !== undefined) {
           image = (r[imageCols[k]] || '').toString().trim();
+          // 清理前後可能的引號 (使用者複製貼上常會多帶)
+          image = image.replace(/^['"`‘’“”]+|['"`‘’“”]+$/g, '').trim();
         }
 
         // 折扣
