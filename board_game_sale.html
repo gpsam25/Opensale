@@ -1505,7 +1505,7 @@
         <a href="${googleImgUrl}" target="_blank" rel="noopener" class="card" style="animation-delay: ${Math.min(i * 15, 600)}ms">
           <div class="card-image">
             <div class="card-image-placeholder">${escapeHtml(initials)}</div>
-            <img src="${imgUrl}" alt="${escapeHtml(d.name)}" loading="lazy" referrerpolicy="no-referrer">
+            <img src="${imgUrl}" alt="${escapeHtml(d.name)}" loading="lazy" referrerpolicy="no-referrer"${isCustomImg ? ` data-fallback="${bingUrl}"` : ''}>
             <span class="external-icon">↗ 看更多圖</span>
             ${stockBadge}
             ${isCustomImg ? '<span class="img-verified">✓ 已確認</span>' : ''}
@@ -1526,20 +1526,35 @@
       `;
     }).join('');
 
-    // 圖片載入完成後淡入
+    // 圖片載入完成後淡入，自訂圖載入失敗則 fallback 到 Bing
     grid.querySelectorAll('img').forEach(img => {
+      const fallback = img.dataset.fallback;
+      const tryFallback = () => {
+        if (fallback && img.src !== fallback) {
+          console.warn('自訂圖載入失敗，退回 Bing 抓:', img.alt);
+          img.src = fallback;
+          img.classList.remove('loaded');
+          // 移除已確認徽章
+          const badge = img.parentElement.querySelector('.img-verified');
+          if (badge) badge.remove();
+        } else {
+          img.remove();
+        }
+      };
+
       if (img.complete && img.naturalWidth > 0) {
         img.classList.add('loaded');
+      } else if (img.complete && img.naturalWidth === 0) {
+        tryFallback();
       } else {
         img.addEventListener('load', () => {
-          // 過濾掉 Bing 的「無結果」預設灰圖 (通常 < 80x80)
           if (img.naturalWidth < 100 || img.naturalHeight < 80) {
-            img.remove();
+            tryFallback();
           } else {
             img.classList.add('loaded');
           }
         }, { once: true });
-        img.addEventListener('error', () => img.remove(), { once: true });
+        img.addEventListener('error', tryFallback, { once: true });
       }
     });
   }
