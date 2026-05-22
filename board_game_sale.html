@@ -309,8 +309,158 @@
     line-height: 1.4;
   }
 
+  /* ===== 分頁切換 Tabs ===== */
+  .tabs {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border-bottom: 1px solid var(--line);
+    background: var(--bg);
+  }
+
+  .tab {
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    padding: 28px 24px 24px;
+    cursor: pointer;
+    color: var(--paper-dim);
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    font-family: inherit;
+  }
+
+  .tab:hover {
+    color: var(--paper);
+    background: rgba(201, 169, 97, 0.04);
+  }
+
+  .tab.active {
+    color: var(--paper);
+    border-bottom-color: var(--accent);
+  }
+
+  .tab.active .tab-label { color: var(--paper); }
+  .tab.active .tab-sublabel { color: var(--gold-bright); }
+
+  .tab-label {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    transition: color 0.3s ease;
+  }
+
+  .tab-sublabel {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--paper-dim);
+    opacity: 0.6;
+    transition: color 0.3s ease;
+  }
+
+  .tab-count {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    opacity: 0.7;
+  }
+
+  .tab.active .tab-count {
+    color: var(--gold-bright);
+    opacity: 1;
+  }
+
+  /* ===== 二手模式色調 (整頁底色微調) ===== */
+  body.used-mode {
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(90, 122, 79, 0.08), transparent 40%),
+      radial-gradient(circle at 85% 70%, rgba(201, 169, 97, 0.04), transparent 45%),
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  }
+
+  body.used-mode .hero::before {
+    background:
+      linear-gradient(135deg, transparent 49.5%, rgba(90, 122, 79, 0.05) 49.5%, rgba(90, 122, 79, 0.05) 50.5%, transparent 50.5%),
+      linear-gradient(45deg, transparent 49.5%, rgba(201, 169, 97, 0.04) 49.5%, rgba(201, 169, 97, 0.04) 50.5%, transparent 50.5%);
+  }
+
+  /* ===== 缺件狀況徽章 (二手用,取代折扣徽章) ===== */
+  .condition-badge {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 5px 10px;
+    color: var(--paper);
+    white-space: nowrap;
+    letter-spacing: 0.05em;
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .condition-badge.perfect {
+    background: var(--moss);
+  }
+
+  .condition-badge.flawed {
+    background: var(--rust);
+    font-size: 10px;
+  }
+
+  /* ===== 二手卡片標記 ===== */
+  .card-used .card-image::before {
+    background:
+      radial-gradient(circle at 30% 30%, rgba(90, 122, 79, 0.25), transparent 60%),
+      radial-gradient(circle at 70% 70%, rgba(201, 169, 97, 0.15), transparent 60%);
+  }
+
+  .used-tag {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 4px 8px;
+    background: rgba(90, 122, 79, 0.92);
+    color: #fff;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    z-index: 3;
+    backdrop-filter: blur(4px);
+  }
+
+  /* ===== 二手模式下標題列字色 ===== */
+  body.used-mode .tab.active {
+    border-bottom-color: var(--moss);
+  }
+
+  body.used-mode .filter-btn.active {
+    background: var(--moss);
+  }
+
   /* ===== STATS BAR ===== */
   .stats {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    border-bottom: 1px solid var(--line);
+  }
     max-width: 1400px;
     margin: 0 auto;
     padding: 40px;
@@ -814,6 +964,10 @@
     .hero { padding: 40px 20px 30px; }
     .title-wrap { grid-template-columns: 1fr; }
     .date-stamp { text-align: left; border-left: none; border-top: 1px solid var(--line); padding: 16px 0 0; }
+    .tabs { padding: 0 20px; }
+    .tab { padding: 20px 16px 18px; }
+    .tab-label { font-size: 18px; }
+    .tab-count { font-size: 24px; top: 16px; right: 16px; }
     .stats { grid-template-columns: repeat(2, 1fr); gap: 24px 0; padding: 24px 20px; }
     .stat { padding: 0 16px; }
     .stat:nth-child(2) { border-right: none; }
@@ -861,7 +1015,7 @@
       </div>
     </div>
     <p class="hero-desc">
-      精選對外表單品項,涵蓋從重策略到派對遊戲。所有清倉品項皆已標示最終結帳價格與折扣比例,等你來把它們帶回家。
+      新品清倉與二手桌遊一站盡覽 — 涵蓋重策略、家庭遊戲、派對到絕版品。所有清倉價格已標示,二手品項詳註缺件狀況,等你來把它們帶回家。
     </p>
     <div class="location-card">
       <div class="location-icon">◉</div>
@@ -885,6 +1039,19 @@
     </p>
   </div>
 </header>
+
+<section class="tabs">
+  <button class="tab active" data-tab="new">
+    <span class="tab-label">新品清倉</span>
+    <span class="tab-sublabel">CLEARANCE</span>
+    <span class="tab-count" id="tab-count-new">—</span>
+  </button>
+  <button class="tab" data-tab="used">
+    <span class="tab-label">二手區</span>
+    <span class="tab-sublabel">SECOND-HAND</span>
+    <span class="tab-count" id="tab-count-used">—</span>
+  </button>
+</section>
 
 <section class="stats">
   <div class="stat">
@@ -915,18 +1082,25 @@
   <div class="search-wrap">
     <input type="text" class="search" id="search" placeholder="搜尋遊戲名稱⋯⋯ 例如：卡坦、瘟疫、巫師">
   </div>
-  <div class="filter-group" id="filter-group">
+  <!-- 新品折扣篩選 -->
+  <div class="filter-group filter-new" id="filter-group-new">
     <button class="filter-btn active" data-filter="all">全部</button>
     <button class="filter-btn" data-filter="hot">特惠 ≤50%</button>
     <button class="filter-btn" data-filter="warm">50–70%</button>
     <button class="filter-btn" data-filter="mild">70–80%</button>
     <button class="filter-btn" data-filter="light">80%+</button>
   </div>
+  <!-- 二手狀況篩選 -->
+  <div class="filter-group filter-used" id="filter-group-used" style="display:none">
+    <button class="filter-btn active" data-filter="all">全部</button>
+    <button class="filter-btn" data-filter="perfect">完整無缺</button>
+    <button class="filter-btn" data-filter="flawed">有缺件</button>
+  </div>
   <select class="sort" id="sort">
-    <option value="discount-asc">折扣 低 → 高</option>
-    <option value="discount-desc">折扣 高 → 低</option>
     <option value="price-asc">價格 低 → 高</option>
     <option value="price-desc">價格 高 → 低</option>
+    <option value="discount-asc">折扣 低 → 高</option>
+    <option value="discount-desc">折扣 高 → 低</option>
     <option value="name">依名稱</option>
   </select>
 </section>
@@ -953,279 +1127,38 @@
   //   3. 複製產生的 .csv URL 貼到下方
   //   4. 若想暫時用本地內建資料,把 CSV_URL 設為空字串 ''
   // ========================================================================
-  const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS-nLCfpodbWxE9Hqa1shIyLeESYOcknUWEOOh4mv69f4eK37WES57me_eDU4f4wsQWHeaRe0KTU2xW/pub?gid=831161904&single=true&output=csv'; // 👈 把試算表的發佈 CSV URL 貼這裡
+  // ========================================================================
+  // 📌 設定區 — 兩份 CSV (新品清倉 + 二手區)
+  // ========================================================================
+  const CSV_URLS = {
+    new: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS-nLCfpodbWxE9Hqa1shIyLeESYOcknUWEOOh4mv69f4eK37WES57me_eDU4f4wsQWHeaRe0KTU2xW/pub?gid=831161904&single=true&output=csv',
+    used: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS-nLCfpodbWxE9Hqa1shIyLeESYOcknUWEOOh4mv69f4eK37WES57me_eDU4f4wsQWHeaRe0KTU2xW/pub?gid=408424604&single=true&output=csv'
+  };
+  const CSV_URL = CSV_URLS.new; // 向後相容
 
-  // CSV 欄位對應 (依你試算表的欄名修改,不分大小寫,可中文)
-  // 程式會依序找這些欄名,找到任一個就用,讓你的試算表欄名有彈性
+  // CSV 欄位對應 (新品 + 二手共用)
   const CSV_FIELDS = {
     name:     ['遊戲名稱', '名稱', 'name', '品名'],
-    price:    ['清倉價', '清倉價格', '清倉價(滿千折百後)', '清倉價格(滿千折百後)', 'price', '售價'],
-    original: ['原價', '售價', '原售價', 'original', 'list price'],
+    price:    ['清倉價', '清倉價格', '清倉價(滿千折百後)', '清倉價格(滿千折百後)', '二手價格', '二手價', 'price', '售價'],
+    original: ['原價', '原售價', 'original', 'list price'],
     discount: ['折數', '折扣', 'discount'],
     stock:    ['庫存', '存量', 'stock', 'qty', 'quantity'],
-    image:    ['縮圖', '圖片', '圖片網址', 'image', 'img', 'thumbnail', 'photo']
+    image:    ['縮圖', '圖片', '圖片網址', 'image', 'img', 'thumbnail', 'photo'],
+    condition:['缺件狀況', '狀況', '備註', 'condition', 'note', 'notes']
   };
 
   // 內建備援資料 (CSV 載入失敗時使用)
+  // 精簡備援:僅在 CSV 完全載入失敗時顯示(實際資料以試算表為準)
   const FALLBACK_DATA = [
-    { name: "地城領主", price: 486, discount: 26 },
-    { name: "地城寵物", price: 486, discount: 28 },
-    { name: "古董局中局 平裝版", price: 387, discount: 29 },
-    { name: "恐龍島", price: 783, discount: 31 },
-    { name: "STAR WARS X-WING", price: 288, discount: 32 },
-    { name: "環遊世界80天", price: 486, discount: 37 },
-    { name: "鍛骰物語", price: 585, discount: 42 },
-    { name: "穿越歷史", price: 585, discount: 42 },
-    { name: "方格都市", price: 585, discount: 42 },
-    { name: "揭密希特勒", price: 882, discount: 43 },
-    { name: "眾神大典", price: 387, discount: 43 },
-    { name: "心靈圖解任務", price: 486, discount: 44 },
-    { name: "開心滑水梯樂園", price: 387, discount: 46 },
-    { name: "蝙蝠農家", price: 972, discount: 47 },
-    { name: "彩色島", price: 882, discount: 47 },
-    { name: "眾裏尋他", price: 387, discount: 49 },
-    { name: "星際大戰大挑戰", price: 486, discount: 49 },
-    { name: "重裝上陣:榮耀之戰(主遊戲)", price: 738, discount: 50 },
-    { name: "柴犬屋", price: 252, discount: 50 },
-    { name: "我的小小鐮刀", price: 882, discount: 50 },
-    { name: "動物們吃吃與便便", price: 252, discount: 51 },
-    { name: "怪獸骰塔", price: 252, discount: 51 },
-    { name: "星雲谷", price: 882, discount: 52 },
-    { name: "御石仙人傳", price: 585, discount: 52 },
-    { name: "關鍵物種-北美洲", price: 882, discount: 53 },
-    { name: "杯子蛋糕學院", price: 486, discount: 54 },
-    { name: "阿不思學院", price: 486, discount: 55 },
-    { name: "龍之吐息", price: 387, discount: 55 },
-    { name: "鏡像圍城", price: 387, discount: 55 },
-    { name: "特拉馬拉", price: 1170, discount: 56 },
-    { name: "精靈捕手", price: 387, discount: 56 },
-    { name: "釣魚好日子", price: 387, discount: 56 },
-    { name: "大腦益智盒:台灣", price: 387, discount: 56 },
-    { name: "心電感應", price: 387, discount: 56 },
-    { name: "瘟疫危機:隔離區北美", price: 486, discount: 57 },
-    { name: "機率大玩家", price: 288, discount: 58 },
-    { name: "大搜查 神話冒險", price: 783, discount: 58 },
-    { name: "大搜查 絕密冒險", price: 783, discount: 58 },
-    { name: "大搜查 異域冒險", price: 783, discount: 58 },
-    { name: "大搜查 史詩冒險", price: 783, discount: 58 },
-    { name: "從前從前-騎士精神", price: 288, discount: 59 },
-    { name: "從前從前-海洋冒險", price: 288, discount: 59 },
-    { name: "從前從前-魔法狂想", price: 288, discount: 59 },
-    { name: "禁閉凶間", price: 972, discount: 59 },
-    { name: "星球防衛者", price: 585, discount: 59 },
-    { name: "古董局中局 精裝版", price: 1467, discount: 59 },
-    { name: "狗戲團疊疊樂", price: 387, discount: 60 },
-    { name: "天際之塔", price: 387, discount: 60 },
-    { name: "隱形帽", price: 387, discount: 60 },
-    { name: "仙境夢遊(受潮)", price: 387, discount: 60 },
-    { name: "天痕決戰", price: 1467, discount: 62 },
-    { name: "瘟疫危機 快速反應", price: 882, discount: 63 },
-    { name: "卡片子彈 Re:LOAD", price: 288, discount: 64 },
-    { name: "喵10 Meow10", price: 288, discount: 64 },
-    { name: "音韻園鰻", price: 288, discount: 64 },
-    { name: "我的啦！OLENON", price: 288, discount: 64 },
-    { name: "生日快快樂-三麗鷗", price: 288, discount: 64 },
-    { name: "怪獸高塔", price: 450, discount: 64 },
-    { name: "埃及考古：新旅程", price: 387, discount: 65 },
-    { name: "知識線 動物篇", price: 387, discount: 65 },
-    { name: "山豬王", price: 252, discount: 65 },
-    { name: "得分城市", price: 486, discount: 65 },
-    { name: "星靈王座:星靈爭霸", price: 387, discount: 66 },
-    { name: "忍者之傲", price: 387, discount: 66 },
-    { name: "骰子工廠", price: 783, discount: 66 },
-    { name: "創世神界", price: 837, discount: 67 },
-    { name: "築夢頌", price: 972, discount: 67 },
-    { name: "風語花鄉", price: 1269, discount: 67 },
-    { name: "性格靈通：神話", price: 198, discount: 68 },
-    { name: "數字火車", price: 540, discount: 68 },
-    { name: "故事小Q:神秘篇", price: 288, discount: 69 },
-    { name: "搶答知識王 家庭版", price: 684, discount: 69 },
-    { name: "神秘導語", price: 684, discount: 69 },
-    { name: "天下無雙：傳奇之戰", price: 972, discount: 69 },
-    { name: "嗒寶 哈利波特", price: 387, discount: 70 },
-    { name: "幻想國度", price: 387, discount: 70 },
-    { name: "嗒寶：恐龍篇", price: 387, discount: 70 },
-    { name: "嗒寶 蜘蛛人", price: 387, discount: 70 },
-    { name: "七翻天", price: 387, discount: 70 },
-    { name: "殭屍棋", price: 486, discount: 70 },
-    { name: "粉墨登場", price: 486, discount: 70 },
-    { name: "五秒定律", price: 486, discount: 70 },
-    { name: "巧手猜圖", price: 1071, discount: 71 },
-    { name: "石來運轉", price: 486, discount: 71 },
-    { name: "超級無敵幸運星", price: 486, discount: 71 },
-    { name: "頭等艙列車", price: 1071, discount: 72 },
-    { name: "卡卡頌 冬季版+地圖擴2", price: 1368, discount: 72 },
-    { name: "控制中心臨界危機", price: 792, discount: 72 },
-    { name: "飛瀑樂園", price: 972, discount: 72 },
-    { name: "LEO獅子剪髮大冒險", price: 684, discount: 72 },
-    { name: "遺跡刮刮樂", price: 837, discount: 72 },
-    { name: "倉庫城", price: 1080, discount: 72 },
-    { name: "台灣製茶錄", price: 1269, discount: 73 },
-    { name: "忘憂繪卷 主遊戲", price: 936, discount: 73 },
-    { name: "環世80天", price: 936, discount: 73 },
-    { name: "塗鴉神諭", price: 585, discount: 73 },
-    { name: "字跡探險隊", price: 882, discount: 74 },
-    { name: "無雙對決：巫師 鋼劍與銀劍", price: 1179, discount: 74 },
-    { name: "三麗鷗翻翻樂", price: 288, discount: 74 },
-    { name: "小早川", price: 288, discount: 74 },
-    { name: "傻傻玩 台灣特有種版", price: 288, discount: 74 },
-    { name: "即刻出局", price: 288, discount: 74 },
-    { name: "迴轉壽司 Sushi go", price: 288, discount: 74 },
-    { name: "奶油還是派", price: 585, discount: 74 },
-    { name: "矮袋鼠小丁的巴士之旅", price: 585, discount: 74 },
-    { name: "狐獴胡蒙", price: 585, discount: 74 },
-    { name: "序列喵喵", price: 585, discount: 74 },
-    { name: "珍珠奶茶", price: 585, discount: 74 },
-    { name: "英雄愛唬爛", price: 585, discount: 74 },
-    { name: "傳情畫意 六人行", price: 585, discount: 74 },
-    { name: "妙語說書人 奧德賽 中文版", price: 882, discount: 74 },
-    { name: "草泥馬", price: 216, discount: 74 },
-    { name: "天下鳴動", price: 882, discount: 75 },
-    { name: "全力揮擊", price: 882, discount: 75 },
-    { name: "超感官同步", price: 486, discount: 75 },
-    { name: "皇冠拉米牌", price: 486, discount: 75 },
-    { name: "神探緝兇2", price: 486, discount: 75 },
-    { name: "驚爆倫敦", price: 486, discount: 75 },
-    { name: "鯨融街", price: 972, discount: 75 },
-    { name: "蟑螂捕手", price: 1269, discount: 75 },
-    { name: "醉闖地城", price: 1566, discount: 75 },
-    { name: "聖瓦西里大教堂", price: 972, discount: 76 },
-    { name: "火線任務 - 閃燃瞬間", price: 972, discount: 76 },
-    { name: "超級魔王地下城", price: 972, discount: 76 },
-    { name: "拉密XP 6人版", price: 972, discount: 76 },
-    { name: "我是香蕉", price: 450, discount: 76 },
-    { name: "逆流上班族", price: 450, discount: 76 },
-    { name: "種豆 2017版", price: 450, discount: 76 },
-    { name: "梭哈", price: 450, discount: 76 },
-    { name: "亡者神抽", price: 450, discount: 76 },
-    { name: "雙面特務", price: 450, discount: 76 },
-    { name: "UNO 麥塊(當個創世神)", price: 252, discount: 77 },
-    { name: "UNO瑪利歐", price: 252, discount: 77 },
-    { name: "UNO星際寶貝", price: 252, discount: 77 },
-    { name: "UNO PIXAR皮克斯", price: 252, discount: 77 },
-    { name: "UNO 瑪利歐", price: 252, discount: 77 },
-    { name: "筷餵小鳥", price: 684, discount: 77 },
-    { name: "幸運轉！轉！轉！", price: 684, discount: 77 },
-    { name: "籤籤入扣", price: 684, discount: 77 },
-    { name: "多數派", price: 684, discount: 77 },
-    { name: "瞎掰王 看圖掰", price: 684, discount: 77 },
-    { name: "五秒定律:接力好棒棒", price: 684, discount: 77 },
-    { name: "估估劃劃", price: 684, discount: 77 },
-    { name: "5211:花磚密語特別版", price: 387, discount: 77 },
-    { name: "嗒寶 哆啦A夢", price: 387, discount: 77 },
-    { name: "情書 無限手套", price: 387, discount: 77 },
-    { name: "詭陣奇談 克蘇魯情書", price: 387, discount: 77 },
-    { name: "嗒寶 中文版", price: 387, discount: 77 },
-    { name: "禮賀台灣", price: 387, discount: 77 },
-    { name: "沉睡皇后周年版+擴充包", price: 387, discount: 77 },
-    { name: "馬可波羅2-可汗的託付", price: 1467, discount: 78 },
-    { name: "爆炸貓桌遊", price: 738, discount: 78 },
-    { name: "推倒提基20周年版", price: 684, discount: 78 },
-    { name: "密弒派對", price: 684, discount: 78 },
-    { name: "花磚密語", price: 972, discount: 78 },
-    { name: "神秘大地 大創造時代", price: 2250, discount: 78 },
-    { name: "爆炸貓 R18版", price: 585, discount: 78 },
-    { name: "字字轉機", price: 351, discount: 78 },
-    { name: "骰子街", price: 585, discount: 78 },
-    { name: "狐夏", price: 351, discount: 78 },
-    { name: "瘟疫危機 中文版", price: 1134, discount: 78 },
-    { name: "眨眨眼 8人中文版", price: 540, discount: 78 },
-    { name: "奧秘小隊", price: 540, discount: 78 },
-    { name: "血與刃的白薔薇", price: 540, discount: 78 },
-    { name: "卡坦島25週年紀念版", price: 2349, discount: 79 },
-    { name: "拔毛運動會", price: 936, discount: 79 },
-    { name: "SET有形有色", price: 387, discount: 79 },
-    { name: "得寸進尺", price: 387, discount: 79 },
-    { name: "SEVEN 中文版", price: 387, discount: 79 },
-    { name: "甩鍋大王", price: 387, discount: 79 },
-    { name: "力爭上游", price: 387, discount: 79 },
-    { name: "瘋狂數字環(防水版)", price: 387, discount: 79 },
-    { name: "回憶三重奏", price: 387, discount: 79 },
-    { name: "情書中文美版", price: 387, discount: 79 },
-    { name: "搞笑瑜珈", price: 387, discount: 79 },
-    { name: "目擊者之夜", price: 387, discount: 79 },
-    { name: "幕後交易", price: 387, discount: 79 },
-    { name: "水瓶座 中文版", price: 387, discount: 79 },
-    { name: "香蕉保衛戰", price: 387, discount: 79 },
-    { name: "靈光同線(心靈同步)", price: 387, discount: 79 },
-    { name: "找電影", price: 387, discount: 79 },
-    { name: "邏輯對決 新版", price: 387, discount: 79 },
-    { name: "海王.舔狗.對的人 成人版", price: 387, discount: 79 },
-    { name: "海王.舔狗.對的人", price: 387, discount: 79 },
-    { name: "誰是牛頭王", price: 387, discount: 79 },
-    { name: "花火 鐵盒版", price: 387, discount: 79 },
-    { name: "字字轉機-臉紅心跳", price: 387, discount: 79 },
-    { name: "試個好遊戲", price: 387, discount: 79 },
-    { name: "限時解鎖 密室逃脫", price: 783, discount: 79 },
-    { name: "蟲蟲燒烤豪門派對", price: 783, discount: 79 },
-    { name: "步步為營", price: 783, discount: 79 },
-    { name: "伊斯坦堡 骰子版", price: 783, discount: 79 },
-    { name: "閃靈快手魔法帽英文版(附中文說明書)", price: 783, discount: 79 },
-    { name: "誰是牛頭王 豪華版", price: 783, discount: 79 },
-    { name: "砰！BANG!", price: 783, discount: 79 },
-    { name: "非洲之旅", price: 783, discount: 79 },
-    { name: "紅龍酒店", price: 783, discount: 79 },
-    { name: "割喉冒險隊", price: 783, discount: 79 },
-    { name: "駱駝大賽 2020版", price: 1179, discount: 79 },
-    { name: "卡牌宿舍(無折扣品)", price: 1332, discount: 79 },
-    { name: "坐以待斃", price: 540, discount: 79 },
-    { name: "伊斯坦堡 大盒版", price: 1665, discount: 80 },
-    { name: "農家樂 (2021新版)", price: 1665, discount: 80 },
-    { name: "麻雀麵", price: 351, discount: 80 },
-    { name: "估估劃劃：嗨起來", price: 783, discount: 80 },
-    { name: "動物全世界", price: 882, discount: 80 },
-    { name: "命運之塔(無折扣品)", price: 1269, discount: 80 },
-    { name: "拼布對決 情人節 英文版", price: 684, discount: 80 },
-    { name: "拉密變臉 鐵盒版", price: 684, discount: 80 },
-    { name: "骰子守護者(無折扣品)", price: 477, discount: 81 },
-    { name: "無間風雲─大全套", price: 639, discount: 81 },
-    { name: "德國心臟病-極限版", price: 639, discount: 81 },
-    { name: "德國心臟病眼花手亂版", price: 639, discount: 81 },
-    { name: "蟲蟲燒烤派對", price: 639, discount: 81 },
-    { name: "達尼的次人格", price: 639, discount: 81 },
-    { name: "狼爾街風雲", price: 639, discount: 81 },
-    { name: "腦洞量表沒有下限", price: 639, discount: 81 },
-    { name: "卡牌之家(無折扣品)", price: 639, discount: 81 },
-    { name: "腦洞量表：大冒險", price: 639, discount: 81 },
-    { name: "妙語說書人 6人版", price: 882, discount: 81 },
-    { name: "皇家港大盒版", price: 882, discount: 81 },
-    { name: "和諧之森", price: 972, discount: 81 },
-    { name: "新版東京之王", price: 972, discount: 81 },
-    { name: "UNO 大格鬥", price: 972, discount: 81 },
-    { name: "爆炸貓", price: 585, discount: 81 },
-    { name: "禁制之島 Forbidden Island", price: 585, discount: 81 },
-    { name: "熱力狂飆", price: 1953, discount: 81 },
-    { name: "傳情畫意", price: 1134, discount: 82 },
-    { name: "瞎掰王 樸素桌迷藏ver.", price: 882, discount: 82 },
-    { name: "13道線索", price: 972, discount: 82 },
-    { name: "紙牌幫", price: 450, discount: 82 },
-    { name: "巫師昆特牌：傳奇之戰", price: 1269, discount: 82 },
-    { name: "星際探險隊", price: 486, discount: 82 },
-    { name: "種豆英中版", price: 486, discount: 82 },
-    { name: "德國蟑螂 皇家版", price: 486, discount: 82 },
-    { name: "天合小隊", price: 783, discount: 82 },
-    { name: "形色叩叩", price: 783, discount: 82 },
-    { name: "拉密袋裝版", price: 783, discount: 82 },
-    { name: "拉密 變臉版(柱狀盒)", price: 783, discount: 82 },
-    { name: "UNO 毫不留情(no mercy)", price: 387, discount: 83 },
-    { name: "烏邦果3D家庭版", price: 1233, discount: 83 },
-    { name: "降妖伏怪", price: 243, discount: 84 },
-    { name: "鼠國稱王", price: 243, discount: 84 },
-    { name: "可可亞", price: 882, discount: 84 },
-    { name: "星際探險隊 深海任務", price: 585, discount: 85 },
-    { name: "搖擺快找王", price: 585, discount: 85 },
-    { name: "巫師：命運之路基本遊戲(豪華模型版)＋美女與野獸擴充", price: 2115, discount: 62 },
-    { name: "巫師：命運之路狼人獨立遊玩遊戲(豪華模型版)", price: 1620, discount: 68 },
-    { name: "雅典衛城基本遊戲+雅典娜擴充", price: 1080, discount: 72 },
-    { name: "大西部開拓者：阿根廷", price: 801, discount: 45 },
-    { name: "皂單全收", price: 180, discount: 40 },
-    { name: "巫師：命運之路 狂獵+傳奇怪物+納吉爾法+蘑菇擴充", price: 1890, discount: 63 },
-    { name: "巫師：命運之路 集資解鎖大盒", price: 3150, discount: 63 }
+    { name: "請打開試算表查看商品清單", price: 0, discount: 100, stock: -1, image: "", category: "new" }
   ];
 
-  // 動態資料容器 (從 CSV 載入或使用備援)
-  let DATA = [];
-  let DATA_SOURCE = 'fallback'; // 'csv' | 'fallback'
+  // 動態資料容器
+  let DATA_NEW = [];      // 新品清倉
+  let DATA_USED = [];     // 二手區
+  let DATA = [];          // 當前顯示用(對應目前選擇的 tab)
+  let CURRENT_TAB = 'new'; // 'new' | 'used'
+  let DATA_SOURCE = 'fallback';
   let LAST_UPDATED = null;
 
   // ====== CSV 載入與解析 ======
@@ -1303,6 +1236,7 @@
     const discCols = findAllCols(CSV_FIELDS.discount);
     const stockCols = findAllCols(CSV_FIELDS.stock);
     const imageCols = findAllCols(CSV_FIELDS.image);
+    const condCols = findAllCols(CSV_FIELDS.condition);
 
     if (nameCols.length === 0 || priceCols.length === 0) {
       console.warn('CSV 欄位偵測失敗', { headers, rawHeaders });
@@ -1344,8 +1278,13 @@
         let image = '';
         if (imageCols[k] !== undefined) {
           image = (r[imageCols[k]] || '').toString().trim();
-          // 清理前後可能的引號 (使用者複製貼上常會多帶)
           image = image.replace(/^['"`‘’“”]+|['"`‘’“”]+$/g, '').trim();
+        }
+
+        // 缺件狀況 (二手用)
+        let condition = '';
+        if (condCols[k] !== undefined) {
+          condition = (r[condCols[k]] || '').toString().trim();
         }
 
         // 折扣
@@ -1365,48 +1304,55 @@
         if (seen.has(key)) continue;
         seen.add(key);
 
-        items.push({ name, price: Math.round(price), discount, stock, image });
+        items.push({ name, price: Math.round(price), discount, stock, image, condition });
       }
     }
     return items;
   }
 
-  async function loadCSV() {
-    if (!CSV_URL) {
-      console.info('未設定 CSV_URL,使用內建備援資料');
-      return null;
-    }
+  async function loadCSV(url) {
+    if (!url) return null;
 
-    // 偵測本機 file:// 開啟 (常見問題)
     if (location.protocol === 'file:') {
       const msg = 'file:// 本機開啟會被瀏覽器擋住 fetch';
-      console.warn('⚠️ ' + msg + ',改用備援資料。請用 http://localhost 或部署到網路上');
+      console.warn('⚠️ ' + msg);
       window.__CSV_ERR__ = msg;
       return null;
     }
 
     try {
-      const url = CSV_URL + (CSV_URL.includes('?') ? '&' : '?') + '_t=' + Date.now();
-      const res = await fetch(url, { mode: 'cors' });
+      const fullUrl = url + (url.includes('?') ? '&' : '?') + '_t=' + Date.now();
+      const res = await fetch(fullUrl, { mode: 'cors' });
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const text = await res.text();
       const rows = parseCSV(text);
       const items = rowsToItems(rows);
       if (items.length === 0) throw new Error('CSV 解析後沒有有效資料');
-      console.info('✅ 從試算表載入 ' + items.length + ' 項');
+      console.info('✅ 載入 ' + items.length + ' 項');
       return items;
     } catch (e) {
-      console.error('CSV 載入失敗,退回備援資料:', e);
+      console.error('CSV 載入失敗:', e);
       window.__CSV_ERR__ = e.message || String(e);
       return null;
     }
+  }
+
+  // 同時載入新品+二手兩份資料
+  async function loadAllData() {
+    const [newItems, usedItems] = await Promise.all([
+      loadCSV(CSV_URLS.new),
+      loadCSV(CSV_URLS.used)
+    ]);
+    return {
+      new: (newItems || []).map(it => ({ ...it, category: 'new' })),
+      used: (usedItems || []).map(it => ({ ...it, category: 'used' }))
+    };
   }
 
   // ====== STATE & DOM ======
   const grid = document.getElementById('grid');
   const searchEl = document.getElementById('search');
   const sortEl = document.getElementById('sort');
-  const filterBtns = document.querySelectorAll('.filter-btn');
   const visibleCountEl = document.getElementById('visible-count');
 
   let currentFilter = 'all';
@@ -1415,33 +1361,42 @@
 
   // ====== STATS ======
   function renderStats() {
-    // 統計只看有庫存的品項 (與顯示一致)
     const live = DATA.filter(d => d.stock !== 0);
+    const isUsedMode = CURRENT_TAB === 'used';
+
     if (live.length === 0) {
       ['stat-count', 'stat-min', 'stat-stock', 'stat-avg'].forEach(id =>
         document.getElementById(id).innerHTML = '—'
       );
       return;
     }
+
     // 庫存加總
     const stockItems = DATA.filter(d => d.stock >= 0);
     const totalStock = stockItems.reduce((s, d) => s + d.stock, 0);
 
-    // 🔍 診斷輸出
-    console.log('📊 統計診斷:');
-    console.log('  - 全部品項數 (DATA.length):', DATA.length);
-    console.log('  - 有讀到庫存數字的品項:', stockItems.length);
-    console.log('  - 庫存加總:', totalStock);
-    console.log('  - 沒填庫存的品項 (前5筆):',
-      DATA.filter(d => d.stock < 0).slice(0, 5).map(d => d.name));
-    console.log('  - 有填庫存的品項 (前5筆):',
-      stockItems.slice(0, 5).map(d => `${d.name}: ${d.stock}`));
-
     document.getElementById('stat-count').innerHTML = stockItems.length > 0 ? totalStock : DATA.length;
-    const minD = Math.min(...live.map(d => d.discount));
-    document.getElementById('stat-min').innerHTML = (minD / 10).toFixed(1) + '<small>折</small>';
     document.getElementById('stat-stock').innerHTML = DATA.length;
-    document.getElementById('stat-avg').innerHTML = '6.7<small>折</small>';
+
+    const minLabel = document.querySelector('#stat-min').parentElement.querySelector('.stat-label');
+    const avgLabel = document.querySelector('#stat-avg').parentElement.querySelector('.stat-label');
+
+    if (isUsedMode) {
+      // 二手:顯示「最低售價」與「平均售價」
+      const minP = Math.min(...live.map(d => d.price));
+      const avgP = Math.round(live.reduce((s, d) => s + d.price, 0) / live.length);
+      document.getElementById('stat-min').innerHTML = minP;
+      minLabel.textContent = 'From · 最低售價 NT$';
+      document.getElementById('stat-avg').innerHTML = avgP;
+      avgLabel.textContent = 'Average · 平均售價 NT$';
+    } else {
+      // 新品:折扣統計
+      const minD = Math.min(...live.map(d => d.discount));
+      document.getElementById('stat-min').innerHTML = (minD / 10).toFixed(1) + '<small>折</small>';
+      minLabel.textContent = 'Lowest · 最低折扣';
+      document.getElementById('stat-avg').innerHTML = '6.7<small>折</small>';
+      avgLabel.textContent = 'Average · 平均折扣';
+    }
   }
 
   // ====== TIER LOGIC ======
@@ -1459,11 +1414,22 @@
   // ====== RENDER ======
   function render() {
     const search = currentSearch.trim().toLowerCase();
+    const isUsedMode = CURRENT_TAB === 'used';
+
     let items = DATA.filter(d => {
-      if (d.stock === 0) return false;  // 🔑 庫存 0 不顯示
-      if (currentFilter !== 'all' && tier(d.discount) !== currentFilter) return false;
+      if (d.stock === 0) return false;
       if (search && !d.name.toLowerCase().includes(search)) return false;
-      return true;
+
+      if (isUsedMode) {
+        // 二手模式: filter 代表狀況篩選
+        if (currentFilter === 'perfect') return (!d.condition || d.condition === '無缺');
+        if (currentFilter === 'flawed') return (d.condition && d.condition !== '無缺');
+        return true; // 'all'
+      } else {
+        // 新品模式: filter 代表折扣等級
+        if (currentFilter !== 'all' && tier(d.discount) !== currentFilter) return false;
+        return true;
+      }
     });
 
     // sort
@@ -1485,6 +1451,7 @@
     }
 
     grid.innerHTML = items.map((d, i) => {
+      const isUsed = d.category === 'used';
       const t = tier(d.discount);
       const dispDiscount = (d.discount / 10).toFixed(1);
       const searchQuery = encodeURIComponent(d.name + ' 桌遊');
@@ -1495,7 +1462,7 @@
       const imgUrl = (d.image && d.image.startsWith('http')) ? d.image : bingUrl;
       const isCustomImg = !!(d.image && d.image.startsWith('http'));
 
-      // 庫存提示:1-3 套 = 急迫紅、4-5 = 提示金、6+ 或未知 = 不顯示
+      // 庫存提示
       let stockBadge = '';
       if (d.stock > 0 && d.stock <= 3) {
         stockBadge = `<span class="stock-badge urgent">剩 ${d.stock} 套</span>`;
@@ -1503,24 +1470,35 @@
         stockBadge = `<span class="stock-badge low">剩 ${d.stock} 套</span>`;
       }
 
+      // 右上徽章: 新品=折扣 / 二手=缺件狀況
+      const cornerBadge = isUsed
+        ? `<span class="condition-badge ${(d.condition === '無缺' || !d.condition) ? 'perfect' : 'flawed'}">${escapeHtml(d.condition || '無缺')}</span>`
+        : `<span class="discount-badge ${t}">${dispDiscount}折</span>`;
+
+      // 卡片底部描述
+      const bottomDesc = isUsed
+        ? `二手特價 · ◆ ${d.condition === '無缺' || !d.condition ? '完整無缺件' : '請見狀況說明'}`
+        : `滿千折百後 · ${tierLabel(t)} ${labelFor(t)}`;
+
       return `
-        <a href="${googleImgUrl}" target="_blank" rel="noopener" class="card" style="animation-delay: ${Math.min(i * 15, 600)}ms">
+        <a href="${googleImgUrl}" target="_blank" rel="noopener" class="card${isUsed ? ' card-used' : ''}" style="animation-delay: ${Math.min(i * 15, 600)}ms">
           <div class="card-image">
             <div class="card-image-placeholder">${escapeHtml(initials)}</div>
             <img src="${imgUrl}" alt="${escapeHtml(d.name)}" loading="lazy" referrerpolicy="no-referrer"${isCustomImg ? ` data-fallback="${bingUrl}"` : ''}>
             <span class="external-icon">↗ 看更多圖</span>
             ${stockBadge}
             ${isCustomImg ? '<span class="img-verified">✓ 已確認</span>' : ''}
+            ${isUsed ? '<span class="used-tag">USED · 二手</span>' : ''}
           </div>
           <div class="card-header">
             <h3 class="card-name">${escapeHtml(d.name)}</h3>
-            <span class="discount-badge ${t}">${dispDiscount}折</span>
+            ${cornerBadge}
           </div>
           <div class="card-body">
             <div class="price-row">
               <div>
                 <div class="price-final">${d.price.toLocaleString()}</div>
-                <div class="savings">滿千折百後 · ${tierLabel(t)} ${labelFor(t)}</div>
+                <div class="savings">${escapeHtml(bottomDesc)}</div>
               </div>
             </div>
           </div>
@@ -1572,9 +1550,29 @@
   // ====== EVENTS ======
   searchEl.addEventListener('input', e => { currentSearch = e.target.value; render(); });
   sortEl.addEventListener('change', e => { currentSort = e.target.value; render(); });
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterBtns.forEach(b => b.classList.remove('active'));
+
+  // Tab 切換
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      switchTab(tab.dataset.tab);
+      // 切換時 filter group 顯示對應的那組
+      document.getElementById('filter-group-new').style.display = tab.dataset.tab === 'new' ? '' : 'none';
+      document.getElementById('filter-group-used').style.display = tab.dataset.tab === 'used' ? '' : 'none';
+      // 重設篩選為「全部」
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      const activeGroup = tab.dataset.tab === 'used' ? '#filter-group-used' : '#filter-group-new';
+      document.querySelector(`${activeGroup} [data-filter="all"]`).classList.add('active');
+      currentFilter = 'all';
+      render();
+    });
+  });
+
+  // 篩選按鈕(使用事件代理,涵蓋兩組 filter)
+  document.querySelectorAll('.filter-group').forEach(group => {
+    group.addEventListener('click', e => {
+      const btn = e.target.closest('.filter-btn');
+      if (!btn) return;
+      group.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       currentFilter = btn.dataset.filter;
       render();
@@ -1583,24 +1581,41 @@
 
   // ====== INIT ======
   async function init() {
-    // 顯示載入中狀態
     grid.innerHTML = '<div class="empty">正在載入庫存資料 ⋯⋯</div>';
 
-    // 先嘗試從 CSV 載入
-    const csvItems = await loadCSV();
-    if (csvItems && csvItems.length > 0) {
-      // 為 CSV 資料補上一份預設 stock (若沒抓到)
-      DATA = csvItems;
+    const all = await loadAllData();
+    DATA_NEW = all.new;
+    DATA_USED = all.used;
+
+    if (DATA_NEW.length > 0 || DATA_USED.length > 0) {
       DATA_SOURCE = 'csv';
       LAST_UPDATED = new Date();
     } else {
-      // CSV 失敗 → 使用備援資料 (假設都有庫存,stock = -1)
-      DATA = FALLBACK_DATA.map(d => ({ ...d, stock: -1 }));
+      DATA_NEW = FALLBACK_DATA.map(d => ({ ...d, stock: -1 }));
+      DATA_USED = [];
       DATA_SOURCE = 'fallback';
     }
 
-    // 更新「資料來源」狀態列
+    // 更新分頁計數
+    document.getElementById('tab-count-new').textContent = DATA_NEW.length;
+    document.getElementById('tab-count-used').textContent = DATA_USED.length;
+
+    switchTab(CURRENT_TAB);
     updateSourceStatus();
+  }
+
+  function switchTab(tab) {
+    CURRENT_TAB = tab;
+    DATA = tab === 'used' ? DATA_USED : DATA_NEW;
+
+    // 更新 tab UI
+    document.querySelectorAll('.tab').forEach(t => {
+      t.classList.toggle('active', t.dataset.tab === tab);
+    });
+
+    // 切換 body 主題色(二手用更冷的色調)
+    document.body.classList.toggle('used-mode', tab === 'used');
+
     renderStats();
     render();
   }
