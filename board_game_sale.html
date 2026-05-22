@@ -1060,7 +1060,7 @@
       </h1>
       <div class="date-stamp">
         UPDATED<br>
-        <strong>05 / 19</strong>
+        <strong id="update-date">—</strong>
       </div>
     </div>
     <p class="hero-desc">
@@ -1245,9 +1245,55 @@
     return -1;
   }
 
+  // 從整份 CSV 掃描「更新日期」標記,取右邊或下一行同欄的值
+  function scanUpdateDate(rows) {
+    const labelPatterns = /^(更新日期|更新時間|最後更新|更新|update|last update|last updated)$/i;
+    for (let i = 0; i < Math.min(rows.length, 20); i++) {
+      const row = rows[i];
+      for (let j = 0; j < row.length; j++) {
+        const cell = (row[j] || '').toString().trim();
+        if (labelPatterns.test(cell)) {
+          // 取右邊那格
+          const right = (row[j + 1] || '').toString().trim();
+          if (right) { applyUpdateDate(right); return; }
+          // 沒有就試下一行同一格
+          if (rows[i + 1]) {
+            const below = (rows[i + 1][j] || '').toString().trim();
+            if (below) { applyUpdateDate(below); return; }
+          }
+        }
+      }
+    }
+  }
+
+  function applyUpdateDate(raw) {
+    if (!raw) return;
+    // 嘗試多種格式: 5/22、05/22、2026/5/22、2026-5-22、5月22日 等
+    let m = raw.match(/(\d{1,2})\s*[\/\-月]\s*(\d{1,2})/);
+    if (m) {
+      const month = m[1].padStart(2, '0');
+      const day = m[2].padStart(2, '0');
+      window.__SHEET_UPDATE_TEXT__ = `${month} / ${day}`;
+      return;
+    }
+    // 若是完整日期字串
+    const d = new Date(raw);
+    if (!isNaN(d.getTime())) {
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      window.__SHEET_UPDATE_TEXT__ = `${month} / ${day}`;
+    } else {
+      // 真的解析不出來就直接顯示原字串
+      window.__SHEET_UPDATE_TEXT__ = raw.length <= 12 ? raw : raw.substring(0, 12);
+    }
+  }
+
   // 從 CSV rows 解析出商品資料
   function rowsToItems(rows) {
     if (rows.length < 2) return [];
+
+    // 先掃描整份 CSV 找「更新日期」標記 — 取其右邊或下方的儲存格值
+    scanUpdateDate(rows);
 
     // 清理欄名:移除 Google Sheets 合併儲存格的標題前綴 (如 "所有新品.../遊戲名稱" → "遊戲名稱")
     const cleanHeader = h => {
@@ -1388,6 +1434,14 @@
       const fullUrl = url + (url.includes('?') ? '&' : '?') + '_t=' + Date.now();
       const res = await fetch(fullUrl, { mode: 'cors' });
       if (!res.ok) throw new Error('HTTP ' + res.status);
+      // 取得試算表最後修改時間 (Google CSV 會回傳 Last-Modified header)
+      const lastMod = res.headers.get('last-modified');
+      if (lastMod) {
+        const d = new Date(lastMod);
+        if (!isNaN(d.getTime()) && (!window.__SHEET_MODIFIED__ || d > window.__SHEET_MODIFIED__)) {
+          window.__SHEET_MODIFIED__ = d;
+        }
+      }
       const text = await res.text();
       const rows = parseCSV(text);
       const items = rowsToItems(rows);
@@ -1662,7 +1716,16 @@
 
     if (DATA_NEW.length > 0 || DATA_USED.length > 0) {
       DATA_SOURCE = 'csv';
-      LAST_UPDATED = new Date();
+      // 優先使用試算表填的「更新日期」欄,沒有再用 HTTP Last-Modified,再沒有用當下
+      if (window.__SHEET_UPDATE_TEXT__) {
+        document.getElementById('update-date').textContent = window.__SHEET_UPDATE_TEXT__;
+      } else {
+        LAST_UPDATED = window.__SHEET_MODIFIED__ || new Date();
+        const m = LAST_UPDATED.getMonth() + 1;
+        const d = LAST_UPDATED.getDate();
+        document.getElementById('update-date').textContent =
+          String(m).padStart(2, '0') + ' / ' + String(d).padStart(2, '0');
+      }
     } else {
       DATA_NEW = FALLBACK_DATA.map(d => ({ ...d, stock: -1 }));
       DATA_USED = [];
