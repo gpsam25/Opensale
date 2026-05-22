@@ -817,6 +817,52 @@
     border-top: 1px dashed var(--line);
   }
 
+  .price-stack {
+    width: 100%;
+  }
+
+  .price-original-line {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    margin-bottom: 6px;
+    color: var(--paper-dim);
+    opacity: 0.7;
+  }
+
+  .price-label {
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .price-strike {
+    text-decoration: line-through;
+    text-decoration-color: rgba(244, 234, 213, 0.4);
+    color: var(--paper-dim);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    font-weight: 500;
+  }
+
+  .price-final-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .price-label-main {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent-glow);
+    font-weight: 700;
+  }
+
   .price-final {
     font-family: 'Cormorant Garamond', serif;
     font-size: 38px;
@@ -1142,7 +1188,8 @@
   // CSV 欄位對應 (新品 + 二手共用)
   const CSV_FIELDS = {
     name:     ['遊戲名稱', '名稱', 'name', '品名'],
-    price:    ['清倉價', '清倉價格', '清倉價(滿千折百後)', '清倉價格(滿千折百後)', '二手價格', '二手價', 'price', '售價'],
+    price:    ['清倉價格(滿千折百後)', '清倉價格', '滿千折百價', '滿千折百後', '二手價格', '二手價', 'price', '售價'],
+    clearance:['清倉價', 'clearance'],
     original: ['原價', '原售價', 'original', 'list price'],
     discount: ['折數', '折扣', 'discount'],
     stock:    ['庫存', '存量', 'stock', 'qty', 'quantity'],
@@ -1235,6 +1282,7 @@
 
     const nameCols = findAllCols(CSV_FIELDS.name);
     const priceCols = findAllCols(CSV_FIELDS.price);
+    const clearCols = findAllCols(CSV_FIELDS.clearance);
     const origCols = findAllCols(CSV_FIELDS.original);
     const discCols = findAllCols(CSV_FIELDS.discount);
     const stockCols = findAllCols(CSV_FIELDS.stock);
@@ -1290,15 +1338,28 @@
           condition = (r[condCols[k]] || '').toString().trim();
         }
 
+        // 原價 (用於計算未折百前的清倉價)
+        let original = 0;
+        if (origCols[k] !== undefined) {
+          const o = cleanNum(r[origCols[k]]);
+          if (isFinite(o) && o > 0) original = Math.round(o);
+        }
+
+        // 清倉價 (未折百前)
+        let clearance = 0;
+        if (clearCols[k] !== undefined) {
+          const c = cleanNum(r[clearCols[k]]);
+          if (isFinite(c) && c > 0) clearance = Math.round(c);
+        }
+
         // 折扣
         let discount = NaN;
         if (discCols[k] !== undefined) {
           discount = cleanNum(r[discCols[k]]);
           if (discount < 1) discount = Math.round(discount * 100);
         }
-        if (!isFinite(discount) && origCols[k] !== undefined) {
-          const orig = cleanNum(r[origCols[k]]);
-          if (isFinite(orig) && orig > 0) discount = Math.round((price / orig) * 100);
+        if (!isFinite(discount) && original > 0) {
+          discount = Math.round((price / original) * 100);
         }
         if (!isFinite(discount)) discount = 100;
 
@@ -1307,7 +1368,7 @@
         if (seen.has(key)) continue;
         seen.add(key);
 
-        items.push({ name, price: Math.round(price), discount, stock, image, condition });
+        items.push({ name, price: Math.round(price), clearance, original, discount, stock, image, condition });
       }
     }
     return items;
@@ -1499,9 +1560,18 @@
           </div>
           <div class="card-body">
             <div class="price-row">
-              <div>
-                <div class="price-final">${d.price.toLocaleString()}</div>
-                <div class="savings">${escapeHtml(bottomDesc)}</div>
+              <div class="price-stack">
+                ${isUsed ? `
+                  <div class="price-final">${d.price.toLocaleString()}</div>
+                  <div class="savings">${escapeHtml(bottomDesc)}</div>
+                ` : `
+                  ${(d.clearance > 0 || d.original > 0) ? `<div class="price-original-line"><span class="price-label">清倉價</span><span class="price-strike">$${(d.clearance > 0 ? d.clearance : Math.round(d.original * d.discount / 100)).toLocaleString()}</span></div>` : ''}
+                  <div class="price-final-row">
+                    <span class="price-label-main">滿千折百後</span>
+                    <div class="price-final">${d.price.toLocaleString()}</div>
+                  </div>
+                  <div class="savings">${escapeHtml(bottomDesc)}</div>
+                `}
               </div>
             </div>
           </div>
