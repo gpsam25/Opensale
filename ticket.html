@@ -779,6 +779,10 @@
             請於 <strong style="color:var(--gold-bright)">${slot.label}</strong> 時段抵達現場,
             出示此畫面 + 手機末 4 碼即可入場。
           </div>
+          <button class="action-btn danger" style="margin-top:20px;width:100%"
+                  onclick="askCancel('${t.date}','${t.slot}','${t.number}')">
+            取消這筆預約
+          </button>
         </div>
       `;
     });
@@ -809,7 +813,7 @@
 
         <div class="reminder">
           <span class="icon">⚠</span>
-          <strong>提醒</strong> · 預約一經送出無法線上取消,若無法到場請來電告知。
+          <strong>提醒</strong> · 預約完成後可再回來查詢或取消,輸入同支手機即可。
         </div>
 
         <div class="action-row">
@@ -822,7 +826,7 @@
       html += `
         <div class="reminder">
           <span class="icon">⚠</span>
-          <strong>您已預約完兩天</strong> · 預約一經送出無法線上取消,若無法到場請來電告知。
+          <strong>您已預約完兩天</strong> · 若無法到場請點上方「取消這筆預約」釋出名額。
         </div>
         <div class="action-row">
           <a class="action-btn" href="board_game_sale.html">← 回商品頁</a>
@@ -838,6 +842,37 @@
       renderDateButtons(tickets);
     }
   }
+
+  window.askCancel = function(date, slot, number) {
+    const d = EVENT_DATES.find(x => x.key === date);
+    const s = TIME_SLOTS.find(x => x.key === slot);
+    showModal(
+      '取消預約',
+      '確定要取消 <strong>' + d.label + ' ' + s.label + '</strong> 的預約 ' + number + ' 號?<br><br>' +
+      '取消後號碼會釋出給其他人,且無法復原。',
+      async () => {
+        closeModal();
+        const main = document.getElementById('main');
+        main.innerHTML = '<div class="loading">處理中</div>';
+        try {
+          const bin = await fetchBin();
+          const sd = getSlotData(bin, date, slot);
+          const idx = sd.reserved.indexOf(currentPhone);
+          if (idx === -1) {
+            alert('找不到此預約');
+            location.reload();
+            return;
+          }
+          sd.reserved.splice(idx, 1);
+          await updateBin(bin);
+          location.reload();
+        } catch (e) {
+          alert('取消失敗,請稍後再試\n' + (e.message || ''));
+          location.reload();
+        }
+      }
+    );
+  };
 
   window.switchPhone = function() {
     showModal(
