@@ -593,15 +593,21 @@
     currentPhone = phone;
     savePhone(phone);
 
+    let existing = [];
     try {
-      currentBin = await fetchAllSlots();
+      // 同時查兩件事: 全部時段狀態 + 此手機已有預約
+      const [binData, myTickets] = await Promise.all([
+        fetchAllSlots(),
+        findTicketsByPhone(phone)
+      ]);
+      currentBin = binData;
+      existing = myTickets;
     } catch (e) {
       hint.textContent = '⚠ 無法連到伺服器,請稍後重試';
       hint.classList.add('error');
       return;
     }
 
-    const existing = findAllTickets(currentBin, phone);
     if (existing.length > 0) {
       // 有任何一張票就先顯示
       renderExistingTickets(phone, existing);
@@ -707,13 +713,26 @@
 
     try {
       // 後端會自動檢查: 1) 同手機同日已預約 2) 時段額滿 3) 寫入鎖
-      await createReservation(selectedDate, selectedSlot, currentPhone);
+      const newTicket = await createReservation(selectedDate, selectedSlot, currentPhone);
 
-      // 重新撈最新所有時段資料
-      currentBin = await fetchAllSlots();
+      // 重新查詢此手機的所有預約 (含剛新增的)
+      // 加個小延遲讓寫入完全 commit
+      await new Promise(r => setTimeout(r, 300));
+      let allTickets = await findTicketsByPhone(currentPhone);
 
-      // 顯示這支手機所有預約
-      const allTickets = findAllTickets(currentBin, currentPhone);
+      // 萬一後端讀取延遲沒帶到剛建立的票,手動補上去
+      const hasNew = allTickets.some(t => t.date === newTicket.date && t.slot === newTicket.slot);
+      if (!hasNew) {
+        allTickets.push({
+          date: newTicket.date,
+          slot: newTicket.slot,
+          number: newTicket.number
+        });
+      }
+
+      // 重新撈最新所有時段資料給後續使用
+      try { currentBin = await fetchAllSlots(); } catch(_) {}
+
       renderExistingTickets(currentPhone, allTickets);
     } catch (e) {
       const msg = (e.message || '').toString();
