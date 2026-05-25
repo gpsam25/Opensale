@@ -406,19 +406,24 @@
   ];
   const RESERVE_LIMIT = 10;
 
-  const BIN_ID = '6a1408786877513b27cc132a';
-  const API_KEY = '$2a$10$5SR.DJkPLipeo/nieyYduOYsc2coPDpSrPVV0url7tI/BUxk3a0Gy';
-  const BIN_URL = 'https://api.jsonbin.io/v3/b/' + BIN_ID;
+  // Google Apps Script 後端 URL
+  const API_URL = 'https://script.google.com/macros/s/AKfycbxaJgDdob92_Q16-BJy-9nhA86izSS0cRqU5VGhnGNAnNRghKnQ1AETaF-RZWrZG5R_Tw/exec';
 
   let showFullPhone = false;
 
   async function fetchBin() {
-    const res = await fetch(BIN_URL + '/latest', {
-      headers: { 'X-Master-Key': API_KEY, 'X-Bin-Meta': 'false' }
-    });
+    const url = new URL(API_URL);
+    url.searchParams.set('action', 'list');
+    const res = await fetch(url.toString());
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
-    return data.record || data;
+    if (!data.ok) throw new Error(data.error || '伺服器錯誤');
+    // 轉換格式: { "0530-10": [phones] } → { tickets: { "0530-10": { reserved: [phones] } } }
+    const result = { tickets: {} };
+    Object.keys(data.tickets || {}).forEach(k => {
+      result.tickets[k] = { reserved: data.tickets[k] };
+    });
+    return result;
   }
 
   function maskPhone(phone) {

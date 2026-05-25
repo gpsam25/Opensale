@@ -394,35 +394,54 @@
   ];
   const RESERVE_LIMIT = 10;
 
-  const BIN_ID = '6a1408786877513b27cc132a';
-  const API_KEY = '$2a$10$5SR.DJkPLipeo/nieyYduOYsc2coPDpSrPVV0url7tI/BUxk3a0Gy';
-  const BIN_URL = 'https://api.jsonbin.io/v3/b/' + BIN_ID;
+  // Google Apps Script 後端 URL
+  const API_URL = 'https://script.google.com/macros/s/AKfycbxaJgDdob92_Q16-BJy-9nhA86izSS0cRqU5VGhnGNAnNRghKnQ1AETaF-RZWrZG5R_Tw/exec';
   const STORAGE_KEY = 'bbgame_phone_2026';
 
-  async function fetchBin() {
-    const res = await fetch(BIN_URL + '/latest', {
-      headers: { 'X-Master-Key': API_KEY, 'X-Bin-Meta': 'false' }
-    });
+  // 呼叫 Apps Script API
+  async function callAPI(action, params) {
+    const url = new URL(API_URL);
+    url.searchParams.set('action', action);
+    Object.keys(params || {}).forEach(k => url.searchParams.set(k, params[k]));
+    const res = await fetch(url.toString());
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
-    return data.record || data;
+    if (!data.ok) throw new Error(data.error || '伺服器錯誤');
+    return data;
   }
 
-  async function updateBin(data) {
-    const res = await fetch(BIN_URL, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
-      body: JSON.stringify(data)
+  // 取得全部時段資料 → 轉換成卡片可用格式
+  // 回傳格式: { "0530-10": { reserved: [phone1, phone2...] }, ... }
+  async function fetchAllSlots() {
+    const data = await callAPI('list');
+    const result = {};
+    Object.keys(data.tickets || {}).forEach(k => {
+      result[k] = { reserved: data.tickets[k] };
     });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    return await res.json();
+    return { tickets: result };
+  }
+
+  // 取得某支手機的所有預約
+  async function findTicketsByPhone(phone) {
+    const data = await callAPI('find', { phone });
+    return data.tickets || [];
+  }
+
+  // 建立預約
+  async function createReservation(date, slot, phone) {
+    const data = await callAPI('create', { date, slot, phone });
+    return data.ticket;
+  }
+
+  // 取消預約
+  async function cancelByPhone(date, slot, phone) {
+    await callAPI('cancel', { date, slot, phone });
   }
 
   function getSlotData(bin, date, slot) {
     if (!bin.tickets) bin.tickets = {};
     const k = date + '-' + slot;
     if (!bin.tickets[k]) bin.tickets[k] = { reserved: [] };
-    // 兼容舊資料: 如果有 walkin 欄位就忽略
     if (!Array.isArray(bin.tickets[k].reserved)) bin.tickets[k].reserved = [];
     return bin.tickets[k];
   }
@@ -470,7 +489,7 @@
   }
 
   let currentPhone = '';
-  let currentBin = { version: 1, tickets: {} };
+  let currentBin = { tickets: {} };
   let selectedDate = null;
   let selectedSlot = null;
 
@@ -575,7 +594,7 @@
     savePhone(phone);
 
     try {
-      currentBin = await fetchBin();
+      currentBin = await fetchAllSlots();
     } catch (e) {
       hint.textContent = '⚠ 無法連到伺服器,請稍後重試';
       hint.classList.add('error');
@@ -687,36 +706,25 @@
     btn.innerHTML = `處理中 ⋯⋯<span class="small">請稍候</span>`;
 
     try {
-      const bin = await fetchBin();
-      currentBin = bin;
+      // 後端會自動檢查: 1) 同手機同日已預約 2) 時段額滿 3) 寫入鎖
+      await createReservation(selectedDate, selectedSlot, currentPhone);
 
-      const existing = findExistingTicket(bin, currentPhone, selectedDate);
-      if (existing) {
-        alert('同支手機在 ' + selectedDate.slice(0,2) + '/' + selectedDate.slice(2) + ' 已預約!');
-        location.reload();
-        return;
-      }
+      // 重新撈最新所有時段資料
+      currentBin = await fetchAllSlots();
 
-      const sd = getSlotData(bin, selectedDate, selectedSlot);
-      if (sd.reserved.length >= RESERVE_LIMIT) {
-        alert('此時段剛剛被預約滿了!請選其他時段,或現場排隊索取號碼牌。');
-        location.reload();
-        return;
-      }
-
-      sd.reserved.push(currentPhone);
-      const number = sd.reserved.length;
-
-      await updateBin(bin);
-      currentBin = bin;
-
-      // 用統一的顯示邏輯 — 重新查詢所有預約再渲染
-      const allTickets = findAllTickets(bin, currentPhone);
+      // 顯示這支手機所有預約
+      const allTickets = findAllTickets(currentBin, currentPhone);
       renderExistingTickets(currentPhone, allTickets);
     } catch (e) {
-      alert('系統忙線,請稍後再試\n' + (e.message || ''));
-      btn.disabled = false;
-      updateSubmitBtn();
+      const msg = (e.message || '').toString();
+      if (msg.includes('已預約')) {
+        alert('同支手機在 ' + selectedDate.slice(0,2) + '/' + selectedDate.slice(2) + ' 已預約!');
+      } else if (msg.includes('已滿')) {
+        alert('此時段剛剛被預約滿了!請選其他時段,或現場排隊索取號碼牌。');
+      } else {
+        alert('系統忙線,請稍後再試\n' + msg);
+      }
+      location.reload();
     }
   }
 
@@ -855,16 +863,7 @@
         const main = document.getElementById('main');
         main.innerHTML = '<div class="loading">處理中</div>';
         try {
-          const bin = await fetchBin();
-          const sd = getSlotData(bin, date, slot);
-          const idx = sd.reserved.indexOf(currentPhone);
-          if (idx === -1) {
-            alert('找不到此預約');
-            location.reload();
-            return;
-          }
-          sd.reserved.splice(idx, 1);
-          await updateBin(bin);
+          await cancelByPhone(date, slot, currentPhone);
           location.reload();
         } catch (e) {
           alert('取消失敗,請稍後再試\n' + (e.message || ''));
