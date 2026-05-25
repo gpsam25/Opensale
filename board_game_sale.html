@@ -651,6 +651,84 @@
     background: var(--moss);
   }
 
+  /* ===== 抽號碼牌懸浮按鈕 ===== */
+  .ticket-fab {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 22px;
+    background: linear-gradient(135deg, #ff6b47 0%, #d4452b 100%);
+    color: #fff;
+    text-decoration: none;
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 700;
+    box-shadow:
+      0 8px 24px rgba(212, 69, 43, 0.5),
+      0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+    transition: all 0.25s ease;
+    animation: fabPulse 3s ease-in-out infinite;
+  }
+
+  .ticket-fab:hover {
+    transform: translateY(-3px);
+    box-shadow:
+      0 14px 32px rgba(212, 69, 43, 0.65),
+      0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+  }
+
+  .ticket-fab .fab-icon {
+    font-size: 24px;
+    line-height: 1;
+  }
+
+  .ticket-fab .fab-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1.2;
+  }
+
+  .ticket-fab .fab-main {
+    font-size: 15px;
+    letter-spacing: 0.05em;
+  }
+
+  .ticket-fab .fab-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    opacity: 0.85;
+    margin-top: 2px;
+  }
+
+  @keyframes fabPulse {
+    0%, 100% {
+      box-shadow: 0 8px 24px rgba(212, 69, 43, 0.5),
+                  0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+    }
+    50% {
+      box-shadow: 0 8px 24px rgba(212, 69, 43, 0.5),
+                  0 0 0 6px rgba(255, 107, 71, 0.25),
+                  0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .ticket-fab {
+      bottom: 16px;
+      right: 16px;
+      padding: 12px 18px;
+      gap: 10px;
+    }
+    .ticket-fab .fab-icon { font-size: 20px; }
+    .ticket-fab .fab-main { font-size: 13px; }
+    .ticket-fab .fab-sub { font-size: 8px; }
+  }
+
   /* ===== STATS BAR ===== */
   .stats {
     max-width: 1400px;
@@ -1409,6 +1487,15 @@
   </div>
   <div class="grid" id="grid"></div>
 </main>
+
+<!-- 線上預約懸浮按鈕 -->
+<a href="ticket.html" class="ticket-fab" aria-label="線上預約">
+  <span class="fab-icon">🎟️</span>
+  <span class="fab-text">
+    <span class="fab-main">線上預約</span>
+    <span class="fab-sub">每時段限 10 組</span>
+  </span>
+</a>
 
 <footer>
   貝克街 × 布萊梅 桌遊清倉 <span class="divider">◆</span> 2026 SPRING EDITION <span class="divider">◆</span> 活動現場 · 台北市大同區錦西街 84 號 <span class="divider">◆</span> 當日恕不接受議價與退換貨

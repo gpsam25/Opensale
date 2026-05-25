@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+<title>線上預約 · 貝克街 × 布萊梅 桌遊清倉</title>
+<meta name="description" content="桌遊清倉線上預約 · 5/30 & 5/31 · 每時段限 10 組,額滿請現場索取號碼牌">
+<meta name="theme-color" content="#0f1410">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="🎟️ 線上預約 · 桌遊清倉">
+<meta property="og:description" content="5/30 & 5/31 · 每時段 10 組,額滿請現場索取號碼牌">
+<meta property="og:url" content="https://gpsam25.github.io/Opensale/ticket.html">
+<meta property="og:image" content="https://gpsam25.github.io/Opensale/og-image.png">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230f1410'/><text x='50' y='68' font-size='60' text-anchor='middle' fill='%23c9a961' font-family='serif' font-weight='bold'>🎟</text></svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Noto+Serif+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #0f1410; --bg-2: #161d18;
+    --paper: #f4ead5; --paper-dim: #e8dcc0;
+    --ink: #1a1f1c;
+    --accent: #d4452b; --accent-glow: #ff6b47;
+    --gold: #c9a961; --gold-bright: #e8c87c;
+    --moss: #5a7a4f; --rust: #b85c38;
+    --line: rgba(244, 234, 213, 0.12);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--paper);
+    font-family: 'Noto Serif TC', serif;
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 24px 16px;
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(212, 69, 43, 0.08), transparent 40%),
+      radial-gradient(circle at 85% 70%, rgba(201, 169, 97, 0.06), transparent 45%);
+  }
+  .container { max-width: 720px; margin: 0 auto; }
+
+  .top-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--line);
+  }
+  .top-back {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.2em;
+    color: var(--gold); text-decoration: none;
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 12px; border: 1px solid var(--line); transition: all 0.2s ease;
+  }
+  .top-back:hover { border-color: var(--gold); background: rgba(201, 169, 97, 0.05); }
+  .top-brand {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: 0.3em; color: var(--gold); opacity: 0.7; text-align: right;
+  }
+
+  .header { text-align: center; padding: 24px 0 32px; }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: 0.4em; color: var(--gold); margin-bottom: 12px;
+  }
+  h1 {
+    font-family: 'Noto Serif TC', serif; font-weight: 900;
+    font-size: 42px; line-height: 1.1; color: var(--paper);
+    text-shadow: 2px 2px 0 var(--accent); margin-bottom: 8px;
+  }
+  .header-sub {
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: 22px; color: var(--gold-bright);
+  }
+
+  .steps-hint {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+    margin-bottom: 28px; padding: 14px;
+    background: var(--bg-2); border: 1px solid var(--line);
+  }
+  .step { text-align: center; padding: 8px 4px; border-right: 1px solid var(--line); }
+  .step:last-child { border-right: none; }
+  .step.active { color: var(--gold-bright); }
+  .step:not(.active) { opacity: 0.4; }
+  .step-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 700; line-height: 1; display: block;
+  }
+  .step-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.15em;
+    margin-top: 4px; text-transform: uppercase;
+  }
+
+  .panel {
+    background: var(--bg-2); border: 1px solid var(--line);
+    padding: 24px; margin-bottom: 16px;
+  }
+  .panel-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.3em; color: var(--gold);
+    margin-bottom: 16px; text-transform: uppercase;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .panel-title::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+
+  .phone-input-wrap { position: relative; }
+  .phone-prefix {
+    position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+    font-family: 'JetBrains Mono', monospace; font-size: 16px;
+    color: var(--gold); pointer-events: none;
+  }
+  .phone-input {
+    width: 100%;
+    background: var(--bg); color: var(--paper);
+    border: 2px solid var(--line);
+    padding: 18px 16px 18px 56px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px; letter-spacing: 0.05em;
+    transition: border 0.2s ease;
+  }
+  .phone-input:focus {
+    outline: none; border-color: var(--gold);
+    background: rgba(201, 169, 97, 0.03);
+  }
+  .phone-input.valid { border-color: var(--moss); }
+  .phone-input.invalid { border-color: var(--rust); }
+  .phone-hint {
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: 13px; margin-top: 10px; color: var(--paper-dim); opacity: 0.7;
+  }
+  .phone-hint.error { color: var(--rust); opacity: 1; }
+
+  .date-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .date-btn {
+    background: transparent; border: 2px solid var(--line); color: var(--paper);
+    padding: 20px 16px; cursor: pointer; font-family: inherit;
+    transition: all 0.25s ease; text-align: left; position: relative;
+  }
+  .date-btn:hover:not(:disabled) {
+    border-color: var(--gold); background: rgba(201, 169, 97, 0.06);
+  }
+  .date-btn.selected {
+    border-color: var(--accent); background: rgba(212, 69, 43, 0.1);
+  }
+  .date-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .date-day {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px; font-weight: 700; color: var(--gold-bright); line-height: 1;
+  }
+  .date-month {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.2em;
+    color: var(--paper-dim); opacity: 0.7; margin-top: 4px;
+  }
+  .date-weekday {
+    position: absolute; top: 16px; right: 16px;
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: 16px; color: var(--gold);
+  }
+  .date-badge {
+    position: absolute; bottom: 14px; right: 16px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--accent-glow); letter-spacing: 0.1em;
+  }
+
+  .slot-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;
+  }
+  @media (min-width: 480px) { .slot-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 720px) { .slot-grid { grid-template-columns: repeat(4, 1fr); } }
+  .slot-btn {
+    background: transparent; border: 1px solid var(--line); color: var(--paper);
+    padding: 14px 8px; cursor: pointer; font-family: inherit;
+    transition: all 0.2s ease; text-align: center; position: relative;
+  }
+  .slot-btn:hover:not(:disabled) {
+    border-color: var(--gold); background: rgba(201, 169, 97, 0.06);
+  }
+  .slot-btn.selected {
+    border-color: var(--accent); background: rgba(212, 69, 43, 0.12);
+  }
+  .slot-btn:disabled { cursor: not-allowed; opacity: 0.4; }
+  .slot-btn.full { border-color: var(--rust); }
+  .slot-time {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px; font-weight: 700; color: var(--gold-bright);
+    line-height: 1; display: block;
+  }
+  .slot-status {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.1em; margin-top: 6px;
+    color: var(--paper-dim); opacity: 0.7;
+  }
+  .slot-btn.full .slot-status { color: var(--rust); opacity: 1; font-weight: 700; }
+  .slot-btn.almost-full .slot-status { color: var(--gold-bright); opacity: 1; }
+
+  .submit-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #ff6b47 0%, #d4452b 100%);
+    border: none; color: #fff;
+    padding: 18px; font-family: 'Noto Serif TC', serif;
+    font-size: 18px; font-weight: 700; letter-spacing: 0.1em;
+    cursor: pointer; transition: all 0.25s ease; margin-top: 8px;
+  }
+  .submit-btn:hover:not(:disabled) {
+    transform: translateY(-2px); box-shadow: 0 8px 24px rgba(212, 69, 43, 0.4);
+  }
+  .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .submit-btn .small {
+    display: block; font-size: 11px; letter-spacing: 0.25em;
+    opacity: 0.8; margin-top: 4px; font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* 票券 */
+  .ticket-card {
+    background: linear-gradient(135deg, var(--bg-2) 0%, #1c2520 100%);
+    border: 2px solid var(--gold);
+    padding: 36px 24px; text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .ticket-card::before, .ticket-card::after {
+    content: ''; position: absolute;
+    width: 30px; height: 30px; background: var(--bg); border-radius: 50%;
+  }
+  .ticket-card::before { top: 50%; left: -15px; transform: translateY(-50%); }
+  .ticket-card::after { top: 50%; right: -15px; transform: translateY(-50%); }
+  .ticket-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.3em; color: var(--gold); margin-bottom: 8px;
+  }
+  .ticket-when {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; color: var(--paper); margin-bottom: 20px; font-style: italic;
+  }
+  .ticket-when strong {
+    color: var(--gold-bright); font-weight: 700; font-style: normal; margin: 0 4px;
+  }
+  .ticket-number-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.4em;
+    color: var(--paper-dim); opacity: 0.7; margin-bottom: 8px;
+  }
+  .ticket-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 140px; font-weight: 700; line-height: 1;
+    color: var(--gold-bright);
+    text-shadow: 0 0 40px rgba(232, 200, 124, 0.4); margin-bottom: 16px;
+  }
+  .ticket-type {
+    display: inline-block; padding: 6px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.25em; margin-bottom: 20px;
+    background: var(--moss); color: #fff;
+  }
+  .ticket-phone-line {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.2em;
+    color: var(--paper-dim); margin-top: 10px; opacity: 0.7;
+  }
+  .ticket-phone-line strong { color: var(--gold-bright); font-weight: 700; }
+  .ticket-note {
+    font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
+    font-size: 14px; color: var(--paper-dim); opacity: 0.85;
+    font-style: italic; margin-top: 16px; padding-top: 16px;
+    border-top: 1px dashed var(--line);
+  }
+
+  .reminder {
+    background: rgba(184, 92, 56, 0.08);
+    border-left: 3px solid var(--rust);
+    padding: 14px 18px; margin-top: 16px;
+    font-size: 14px; color: var(--paper-dim);
+  }
+  .reminder strong { color: var(--gold-bright); }
+  .reminder .icon { color: var(--rust); margin-right: 6px; }
+
+  .info-card {
+    background: rgba(90, 122, 79, 0.08);
+    border-left: 3px solid var(--moss);
+    padding: 14px 18px; margin-top: 16px;
+    font-size: 14px; color: var(--paper-dim);
+  }
+  .info-card strong { color: var(--gold-bright); }
+  .info-card .icon { color: var(--moss); margin-right: 6px; }
+
+  .action-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px;
+  }
+  .action-btn {
+    background: var(--bg-2); border: 1px solid var(--line); color: var(--paper);
+    padding: 14px; font-family: 'Noto Serif TC', serif;
+    font-size: 13px; letter-spacing: 0.1em; cursor: pointer;
+    text-decoration: none; text-align: center; transition: all 0.2s ease;
+  }
+  .action-btn:hover {
+    border-color: var(--gold); background: rgba(201, 169, 97, 0.06);
+  }
+  .action-btn.danger {
+    border-color: rgba(184, 92, 56, 0.4); color: var(--rust);
+  }
+  .action-btn.danger:hover { background: rgba(184, 92, 56, 0.08); }
+
+  .loading {
+    text-align: center; padding: 40px;
+    color: var(--paper-dim); opacity: 0.6; font-style: italic;
+  }
+  .loading::before {
+    content: '◈'; display: inline-block; margin-right: 8px;
+    animation: spin 1.4s linear infinite;
+  }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  .modal-mask {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+    display: none; align-items: center; justify-content: center;
+    z-index: 1000; padding: 20px;
+  }
+  .modal-mask.show { display: flex; }
+  .modal-box {
+    background: var(--bg-2); border: 1px solid var(--gold);
+    padding: 28px; max-width: 400px; width: 100%;
+  }
+  .modal-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px; color: var(--gold-bright); margin-bottom: 12px;
+  }
+  .modal-body {
+    color: var(--paper-dim); font-size: 14px; line-height: 1.7; margin-bottom: 20px;
+  }
+  .modal-actions {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+  }
+
+  footer {
+    text-align: center; padding: 32px 0 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.2em;
+    color: var(--paper-dim); opacity: 0.4;
+  }
+  footer a { color: var(--gold); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="top-bar">
+    <a class="top-back" href="board_game_sale.html">← 回商品頁</a>
+    <div class="top-brand">BÄCKER ST. × BREMEN</div>
+  </div>
+
+  <header class="header">
+    <div class="eyebrow">ONLINE RESERVATION · 線上預約</div>
+    <h1>🎟️ 線上預約</h1>
+    <div class="header-sub">Reserve Your Spot.</div>
+  </header>
+
+  <main id="main">
+    <div class="loading">載入中</div>
+  </main>
+
+  <footer>
+    BÄCKER ST. × BREMEN · 2026 ·
+    <a href="board_game_sale.html">回商品頁</a>
+  </footer>
+</div>
+
+<div class="modal-mask" id="modal">
+  <div class="modal-box">
+    <div class="modal-title" id="modal-title">確認</div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-actions">
+      <button class="action-btn" onclick="closeModal()">取消</button>
+      <button class="action-btn danger" id="modal-confirm">確認</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const EVENT_DATES = [
+    { key: '0530', label: '5/30', month: 'MAY', day: '30', weekday: 'Sat.' },
+    { key: '0531', label: '5/31', month: 'MAY', day: '31', weekday: 'Sun.' }
+  ];
+  const TIME_SLOTS = [
+    { key: '10', label: '10:00' }, { key: '11', label: '11:00' },
+    { key: '12', label: '12:00' }, { key: '13', label: '13:00' },
+    { key: '14', label: '14:00' }, { key: '15', label: '15:00' },
+    { key: '16', label: '16:00' }
+  ];
+  const RESERVE_LIMIT = 10;
+
+  const BIN_ID = '6a1408786877513b27cc132a';
+  const API_KEY = '$2a$10$5SR.DJkPLipeo/nieyYduOYsc2coPDpSrPVV0url7tI/BUxk3a0Gy';
+  const BIN_URL = 'https://api.jsonbin.io/v3/b/' + BIN_ID;
+  const STORAGE_KEY = 'bbgame_phone_2026';
+
+  async function fetchBin() {
+    const res = await fetch(BIN_URL + '/latest', {
+      headers: { 'X-Master-Key': API_KEY, 'X-Bin-Meta': 'false' }
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    return data.record || data;
+  }
+
+  async function updateBin(data) {
+    const res = await fetch(BIN_URL, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
+      body: JSON.stringify(data)
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    return await res.json();
+  }
+
+  function getSlotData(bin, date, slot) {
+    if (!bin.tickets) bin.tickets = {};
+    const k = date + '-' + slot;
+    if (!bin.tickets[k]) bin.tickets[k] = { reserved: [] };
+    // 兼容舊資料: 如果有 walkin 欄位就忽略
+    if (!Array.isArray(bin.tickets[k].reserved)) bin.tickets[k].reserved = [];
+    return bin.tickets[k];
+  }
+
+  function findExistingTicket(bin, phone, date) {
+    if (!bin.tickets) return null;
+    for (const slot of TIME_SLOTS) {
+      const k = date + '-' + slot.key;
+      const sd = bin.tickets[k];
+      if (!sd || !sd.reserved) continue;
+      const idx = sd.reserved.indexOf(phone);
+      if (idx !== -1) return { slot: slot.key, number: idx + 1 };
+    }
+    return null;
+  }
+
+  function findAllTickets(bin, phone) {
+    const result = [];
+    EVENT_DATES.forEach(d => {
+      const t = findExistingTicket(bin, phone, d.key);
+      if (t) result.push({ date: d.key, ...t });
+    });
+    return result;
+  }
+
+  function getStoredPhone() {
+    try { return localStorage.getItem(STORAGE_KEY) || ''; }
+    catch (e) { return ''; }
+  }
+  function savePhone(phone) {
+    try { localStorage.setItem(STORAGE_KEY, phone); } catch (e) {}
+  }
+  function clearPhone() {
+    try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+  }
+
+  function validatePhone(raw) {
+    const clean = (raw || '').replace(/\D/g, '');
+    if (!/^09\d{8}$/.test(clean)) return null;
+    return clean;
+  }
+  function maskPhone(phone) {
+    if (!phone || phone.length < 4) return phone || '';
+    return '****' + phone.slice(-4);
+  }
+
+  let currentPhone = '';
+  let currentBin = { version: 1, tickets: {} };
+  let selectedDate = null;
+  let selectedSlot = null;
+
+  function renderSelectionPage() {
+    const main = document.getElementById('main');
+    main.innerHTML = `
+      <div class="steps-hint">
+        <div class="step active" id="step-1">
+          <span class="step-num">1</span><span class="step-text">手機</span>
+        </div>
+        <div class="step" id="step-2">
+          <span class="step-num">2</span><span class="step-text">日期</span>
+        </div>
+        <div class="step" id="step-3">
+          <span class="step-num">3</span><span class="step-text">時段</span>
+        </div>
+        <div class="step" id="step-4">
+          <span class="step-num">4</span><span class="step-text">送出</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">① 輸入手機號碼</div>
+        <div class="phone-input-wrap">
+          <span class="phone-prefix">📱</span>
+          <input type="tel" class="phone-input" id="phone-input"
+                 inputmode="numeric" maxlength="10"
+                 placeholder="0912345678" autocomplete="tel">
+        </div>
+        <div class="phone-hint" id="phone-hint">
+          請輸入 10 碼台灣手機,作為現場核對與防止重複預約用途。
+        </div>
+      </div>
+
+      <div class="panel" id="date-panel" style="display:none">
+        <div class="panel-title">② 選擇日期</div>
+        <div class="date-grid" id="date-grid"></div>
+      </div>
+
+      <div class="panel" id="slot-panel" style="display:none">
+        <div class="panel-title">③ 選擇時段</div>
+        <div class="slot-grid" id="slot-grid"></div>
+      </div>
+
+      <button class="submit-btn" id="submit-btn" disabled>
+        請依序填入資料
+        <span class="small">↓ 送出後立即取得預約號</span>
+      </button>
+
+      <div class="reminder">
+        <span class="icon">⚠</span>
+        <strong>規則</strong> · 每時段限 ${RESERVE_LIMIT} 組線上預約。每支手機每天限預約 1 次,
+        輸入手機可在任何裝置查詢/取消預約。
+      </div>
+
+      <div class="info-card">
+        <span class="icon">●</span>
+        <strong>額滿怎麼辦?</strong> · 若線上預約已滿,請直接<strong>現場排隊索取號碼牌</strong>,
+        待預約時段內名額釋出後可入場。
+      </div>
+    `;
+
+    const stored = getStoredPhone();
+    if (stored) document.getElementById('phone-input').value = stored;
+    bindPhoneInput();
+  }
+
+  function bindPhoneInput() {
+    const input = document.getElementById('phone-input');
+    const hint = document.getElementById('phone-hint');
+    let debounceTimer;
+    input.addEventListener('input', e => {
+      const cleaned = e.target.value.replace(/\D/g, '').slice(0, 10);
+      if (e.target.value !== cleaned) e.target.value = cleaned;
+      input.classList.remove('valid', 'invalid');
+      hint.classList.remove('error');
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => onPhoneValidated(), 250);
+    });
+    if (input.value) setTimeout(() => onPhoneValidated(), 100);
+  }
+
+  async function onPhoneValidated() {
+    const input = document.getElementById('phone-input');
+    const hint = document.getElementById('phone-hint');
+    const phone = validatePhone(input.value);
+
+    if (!phone) {
+      if (input.value.length > 0) {
+        input.classList.add('invalid');
+        hint.textContent = '⚠ 手機格式不正確,請輸入 09 開頭的 10 碼數字';
+        hint.classList.add('error');
+      }
+      currentPhone = '';
+      hideAfterPhone();
+      return;
+    }
+
+    input.classList.add('valid');
+    hint.textContent = '✓ 已驗證 ' + maskPhone(phone) + ' · 同手機已預約會自動帶出';
+    currentPhone = phone;
+    savePhone(phone);
+
+    try {
+      currentBin = await fetchBin();
+    } catch (e) {
+      hint.textContent = '⚠ 無法連到伺服器,請稍後重試';
+      hint.classList.add('error');
+      return;
+    }
+
+    const existing = findAllTickets(currentBin, phone);
+    if (existing.length === EVENT_DATES.length) {
+      renderExistingTickets(phone, existing);
+      return;
+    }
+
+    document.getElementById('step-2').classList.add('active');
+    document.getElementById('date-panel').style.display = '';
+    renderDateButtons(existing);
+  }
+
+  function hideAfterPhone() {
+    document.getElementById('date-panel').style.display = 'none';
+    document.getElementById('slot-panel').style.display = 'none';
+    document.getElementById('step-2').classList.remove('active');
+    document.getElementById('step-3').classList.remove('active');
+    document.getElementById('step-4').classList.remove('active');
+    selectedDate = null; selectedSlot = null;
+    updateSubmitBtn();
+  }
+
+  function renderDateButtons(existingTickets) {
+    const grid = document.getElementById('date-grid');
+    const existingDates = (existingTickets || []).map(t => t.date);
+    grid.innerHTML = EVENT_DATES.map(d => {
+      const has = existingDates.includes(d.key);
+      return `
+        <button class="date-btn" data-date="${d.key}" ${has ? 'disabled' : ''}>
+          <div class="date-day">${d.day}</div>
+          <div class="date-month">${d.month}</div>
+          <div class="date-weekday">${d.weekday}</div>
+          ${has ? '<div class="date-badge">已預約</div>' : ''}
+        </button>
+      `;
+    }).join('');
+
+    grid.querySelectorAll('.date-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (btn.disabled) return;
+        grid.querySelectorAll('.date-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedDate = btn.dataset.date;
+        selectedSlot = null;
+        document.getElementById('step-3').classList.add('active');
+        document.getElementById('slot-panel').style.display = '';
+        renderSlotButtons();
+        updateSubmitBtn();
+      });
+    });
+  }
+
+  function renderSlotButtons() {
+    const grid = document.getElementById('slot-grid');
+    grid.innerHTML = TIME_SLOTS.map(s => {
+      const sd = getSlotData(currentBin, selectedDate, s.key);
+      const reserved = sd.reserved.length;
+      const isFull = reserved >= RESERVE_LIMIT;
+      const isAlmost = reserved >= RESERVE_LIMIT - 2 && !isFull;
+
+      let statusText = isFull
+        ? '已滿 · 改現場排'
+        : `預約 ${reserved}/${RESERVE_LIMIT}`;
+
+      return `
+        <button class="slot-btn ${isFull ? 'full' : ''} ${isAlmost ? 'almost-full' : ''}"
+                data-slot="${s.key}" ${isFull ? 'disabled' : ''}>
+          <span class="slot-time">${s.label}</span>
+          <div class="slot-status">${statusText}</div>
+        </button>
+      `;
+    }).join('');
+
+    grid.querySelectorAll('.slot-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (btn.disabled) return;
+        grid.querySelectorAll('.slot-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedSlot = btn.dataset.slot;
+        document.getElementById('step-4').classList.add('active');
+        updateSubmitBtn();
+      });
+    });
+  }
+
+  function updateSubmitBtn() {
+    const btn = document.getElementById('submit-btn');
+    if (!currentPhone || !selectedDate || !selectedSlot) {
+      btn.innerHTML = `請依序填入資料<span class="small">↓ 送出後立即取得預約號</span>`;
+      btn.disabled = true;
+      return;
+    }
+    const date = EVENT_DATES.find(d => d.key === selectedDate);
+    const slot = TIME_SLOTS.find(s => s.key === selectedSlot);
+    btn.disabled = false;
+    btn.innerHTML = `預約 ${date.label} ${slot.label}<span class="small">↓ 送出後立即取得預約號</span>`;
+  }
+
+  async function submitTicket() {
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.innerHTML = `處理中 ⋯⋯<span class="small">請稍候</span>`;
+
+    try {
+      const bin = await fetchBin();
+      currentBin = bin;
+
+      const existing = findExistingTicket(bin, currentPhone, selectedDate);
+      if (existing) {
+        alert('同支手機在 ' + selectedDate.slice(0,2) + '/' + selectedDate.slice(2) + ' 已預約!');
+        location.reload();
+        return;
+      }
+
+      const sd = getSlotData(bin, selectedDate, selectedSlot);
+      if (sd.reserved.length >= RESERVE_LIMIT) {
+        alert('此時段剛剛被預約滿了!請選其他時段,或現場排隊索取號碼牌。');
+        location.reload();
+        return;
+      }
+
+      sd.reserved.push(currentPhone);
+      const number = sd.reserved.length;
+
+      await updateBin(bin);
+      currentBin = bin;
+
+      renderTicketPage({
+        phone: currentPhone,
+        date: selectedDate,
+        slot: selectedSlot,
+        number
+      });
+    } catch (e) {
+      alert('系統忙線,請稍後再試\n' + (e.message || ''));
+      btn.disabled = false;
+      updateSubmitBtn();
+    }
+  }
+
+  function renderTicketPage(ticket) {
+    const main = document.getElementById('main');
+    const date = EVENT_DATES.find(d => d.key === ticket.date);
+    const slot = TIME_SLOTS.find(s => s.key === ticket.slot);
+
+    main.innerHTML = `
+      <div class="ticket-card">
+        <div class="ticket-eyebrow">YOUR RESERVATION · 您的預約</div>
+        <div class="ticket-when">
+          <strong>${date ? date.label : ticket.date}</strong> ·
+          <strong>${slot ? slot.label : ticket.slot + ':00'}</strong>
+        </div>
+        <div class="ticket-number-label">NUMBER · 預約序號</div>
+        <div class="ticket-number">${ticket.number}</div>
+        <div class="ticket-type">★ 預約 RESERVED</div>
+        <div class="ticket-phone-line">
+          手機 · <strong>${maskPhone(ticket.phone)}</strong>
+        </div>
+        <div class="ticket-note">
+          請於 <strong style="color:var(--gold-bright)">${slot ? slot.label : ''}</strong> 時段抵達現場,
+          出示此畫面 + 手機末 4 碼即可入場。
+        </div>
+      </div>
+
+      <div class="reminder">
+        <span class="icon">⚠</span>
+        <strong>提醒</strong> · 請保持此頁面或截圖。若換裝置查詢,在預約頁輸入同支手機即可帶出。
+      </div>
+
+      <div class="action-row">
+        <button class="action-btn" onclick="continueToOtherDay()">+ 預約另一天</button>
+        <button class="action-btn danger" onclick="askCancel('${ticket.date}','${ticket.slot}','${ticket.number}')">取消預約</button>
+      </div>
+
+      <div class="action-row">
+        <a class="action-btn" href="board_game_sale.html">← 回商品頁</a>
+        <button class="action-btn" onclick="switchPhone()">↻ 換手機查詢</button>
+      </div>
+    `;
+  }
+
+  function renderExistingTickets(phone, tickets) {
+    if (tickets.length === 1) {
+      renderTicketPage({ phone, ...tickets[0] });
+      return;
+    }
+    const main = document.getElementById('main');
+    let html = '';
+    tickets.forEach(t => {
+      const date = EVENT_DATES.find(d => d.key === t.date);
+      const slot = TIME_SLOTS.find(s => s.key === t.slot);
+      html += `
+        <div class="ticket-card" style="margin-bottom:16px">
+          <div class="ticket-eyebrow">${date.label} · ${slot.label}</div>
+          <div class="ticket-number" style="font-size:96px">${t.number}</div>
+          <div class="ticket-type">★ 預約</div>
+          <div class="ticket-phone-line">手機 · <strong>${maskPhone(phone)}</strong></div>
+          <button class="action-btn danger" style="margin-top:16px"
+                  onclick="askCancel('${t.date}','${t.slot}','${t.number}')">
+            取消這筆預約
+          </button>
+        </div>
+      `;
+    });
+    html += `
+      <div class="reminder">
+        <span class="icon">⚠</span>
+        <strong>提醒</strong> · 您已預約完兩天,顯示如上。
+      </div>
+      <div class="action-row">
+        <a class="action-btn" href="board_game_sale.html">← 回商品頁</a>
+        <button class="action-btn" onclick="switchPhone()">↻ 換手機查詢</button>
+      </div>
+    `;
+    main.innerHTML = html;
+  }
+
+  window.askCancel = function(date, slot, number) {
+    const d = EVENT_DATES.find(x => x.key === date);
+    const s = TIME_SLOTS.find(x => x.key === slot);
+    showModal(
+      '取消預約',
+      '確定要取消 <strong>' + d.label + ' ' + s.label + '</strong> 的預約 ' + number + ' 號?<br><br>' +
+      '取消後號碼會釋出給其他人,且無法恢復。',
+      async () => {
+        closeModal();
+        const main = document.getElementById('main');
+        main.innerHTML = '<div class="loading">處理中</div>';
+        try {
+          const bin = await fetchBin();
+          const sd = getSlotData(bin, date, slot);
+          const idx = sd.reserved.indexOf(currentPhone);
+          if (idx === -1) {
+            alert('找不到此預約');
+            location.reload();
+            return;
+          }
+          sd.reserved.splice(idx, 1);
+          await updateBin(bin);
+          location.reload();
+        } catch (e) {
+          alert('取消失敗,請稍後再試\n' + (e.message || ''));
+          location.reload();
+        }
+      }
+    );
+  };
+
+  window.continueToOtherDay = function() {
+    location.hash = '';
+    init();
+  };
+
+  window.switchPhone = function() {
+    showModal(
+      '換手機查詢',
+      '清除目前的手機記錄,改用其他手機號碼查詢/預約?',
+      () => {
+        clearPhone();
+        closeModal();
+        location.reload();
+      }
+    );
+  };
+
+  function showModal(title, body, onConfirm) {
+    document.getElementById('modal-title').textContent = title;
+    document.getElementById('modal-body').innerHTML = body;
+    document.getElementById('modal-confirm').onclick = onConfirm;
+    document.getElementById('modal').classList.add('show');
+  }
+  window.closeModal = function() {
+    document.getElementById('modal').classList.remove('show');
+  };
+
+  document.addEventListener('click', e => {
+    if (e.target.closest('#submit-btn') && !e.target.closest('#submit-btn').disabled) {
+      submitTicket();
+    }
+  });
+
+  async function init() { renderSelectionPage(); }
+  init();
+</script>
+
+</body>
+</html>

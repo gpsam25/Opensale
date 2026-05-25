@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>後台 · 預約管理</title>
+<meta name="robots" content="noindex, nofollow">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Noto+Serif+TC:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #0f1410; --bg-2: #161d18;
+    --paper: #f4ead5; --paper-dim: #e8dcc0;
+    --accent: #d4452b; --accent-glow: #ff6b47;
+    --gold: #c9a961; --gold-bright: #e8c87c;
+    --moss: #5a7a4f; --rust: #b85c38;
+    --line: rgba(244, 234, 213, 0.12);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--paper);
+    font-family: 'Noto Serif TC', serif;
+    padding: 24px 16px; min-height: 100vh;
+  }
+  .container { max-width: 1200px; margin: 0 auto; }
+
+  header {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 16px; margin-bottom: 24px;
+    display: flex; justify-content: space-between;
+    align-items: baseline; flex-wrap: wrap; gap: 16px;
+  }
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px; color: var(--gold-bright);
+  }
+  h1 small {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.3em;
+    color: var(--gold); display: block; margin-bottom: 4px;
+  }
+  .controls { display: flex; gap: 8px; }
+  .refresh-btn, .toggle-btn {
+    background: var(--bg-2); border: 1px solid var(--gold);
+    color: var(--gold-bright); padding: 10px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.2em;
+    cursor: pointer; text-transform: uppercase;
+  }
+  .refresh-btn:hover, .toggle-btn:hover { background: var(--gold); color: #000; }
+  .toggle-btn.active { background: var(--gold); color: #000; }
+
+  .overview {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0; border: 1px solid var(--line); margin-bottom: 32px;
+  }
+  .ov-cell {
+    padding: 20px; border-right: 1px solid var(--line); text-align: center;
+  }
+  .ov-cell:last-child { border-right: none; }
+  .ov-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px; font-weight: 700;
+    color: var(--gold-bright); line-height: 1;
+  }
+  .ov-num.red { color: var(--accent-glow); }
+  .ov-num.green { color: var(--moss); }
+  .ov-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.2em;
+    color: var(--paper-dim); opacity: 0.7;
+    margin-top: 8px; text-transform: uppercase;
+  }
+
+  .day { margin-bottom: 28px; }
+  .day-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px; color: var(--gold);
+    margin-bottom: 12px; padding-bottom: 8px;
+    border-bottom: 2px solid var(--gold);
+    display: flex; justify-content: space-between;
+    align-items: baseline; flex-wrap: wrap; gap: 12px;
+  }
+  .day-total {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--paper);
+  }
+  .day-total strong {
+    color: var(--gold-bright); font-size: 16px;
+  }
+
+  .slot-grid-admin {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .slot-card {
+    background: var(--bg-2); border: 1px solid var(--line);
+    padding: 16px;
+  }
+  .slot-card.full { border-color: var(--rust); }
+  .slot-head {
+    display: flex; justify-content: space-between;
+    align-items: baseline; margin-bottom: 12px;
+    padding-bottom: 10px; border-bottom: 1px dashed var(--line);
+  }
+  .slot-head-time {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px; font-weight: 700; color: var(--paper);
+  }
+  .slot-head-status {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.2em;
+  }
+  .slot-head-status.full { color: var(--rust); }
+  .slot-head-status.open { color: var(--moss); }
+
+  .slot-section-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.2em;
+    color: var(--gold); margin-bottom: 8px;
+    text-transform: uppercase;
+    display: flex; justify-content: space-between;
+  }
+  .slot-section-title .count { color: var(--gold-bright); }
+
+  .num-list {
+    display: flex; flex-wrap: wrap; gap: 4px;
+  }
+  .num-item {
+    display: inline-flex; align-items: center;
+    background: rgba(201, 169, 97, 0.08);
+    border: 1px solid var(--line);
+    padding: 4px 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; gap: 6px;
+  }
+  .num-item .num {
+    font-weight: 700; color: var(--gold-bright);
+  }
+  .num-item .phone {
+    color: var(--paper-dim); opacity: 0.7;
+  }
+  .num-item .full-phone {
+    color: var(--paper); opacity: 0.95;
+  }
+
+  .bar-wrap {
+    background: var(--line); height: 6px;
+    position: relative; overflow: hidden;
+    margin-top: 8px;
+  }
+  .bar-fill {
+    position: absolute; top:0; left:0; height: 100%;
+    background: linear-gradient(90deg, var(--moss), var(--gold));
+    transition: width 0.5s ease;
+  }
+  .bar-fill.full {
+    background: linear-gradient(90deg, var(--gold), var(--accent));
+  }
+
+  .empty-msg {
+    color: var(--paper-dim); opacity: 0.4;
+    font-style: italic; font-size: 12px;
+  }
+
+  .last-update {
+    text-align: right;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--paper-dim);
+    opacity: 0.5; margin-top: 16px; letter-spacing: 0.15em;
+  }
+  .loading {
+    text-align: center; padding: 60px;
+    color: var(--paper-dim); opacity: 0.5; font-style: italic;
+  }
+
+  @media (max-width: 720px) {
+    .overview { grid-template-columns: 1fr; }
+    .ov-cell { border-right: none; border-bottom: 1px solid var(--line); }
+    .ov-cell:last-child { border-bottom: none; }
+    .ov-num { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <header>
+    <h1>
+      <small>ADMIN · 線上預約後台</small>
+      Reservation Dashboard
+    </h1>
+    <div class="controls">
+      <button class="toggle-btn" id="toggle-phone" onclick="togglePhoneDisplay()">後 4 碼</button>
+      <button class="refresh-btn" onclick="loadAll()">↻ 重新整理</button>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="loading">載入中⋯⋯</div>
+  </main>
+
+  <div class="last-update" id="last-update"></div>
+</div>
+
+<script>
+  const EVENT_DATES = [
+    { key: '0530', label: '5月30日 (週六)' },
+    { key: '0531', label: '5月31日 (週日)' }
+  ];
+  const TIME_SLOTS = [
+    { key: '10', label: '10:00' }, { key: '11', label: '11:00' },
+    { key: '12', label: '12:00' }, { key: '13', label: '13:00' },
+    { key: '14', label: '14:00' }, { key: '15', label: '15:00' },
+    { key: '16', label: '16:00' }
+  ];
+  const RESERVE_LIMIT = 10;
+
+  const BIN_ID = '6a1408786877513b27cc132a';
+  const API_KEY = '$2a$10$5SR.DJkPLipeo/nieyYduOYsc2coPDpSrPVV0url7tI/BUxk3a0Gy';
+  const BIN_URL = 'https://api.jsonbin.io/v3/b/' + BIN_ID;
+
+  let showFullPhone = false;
+
+  async function fetchBin() {
+    const res = await fetch(BIN_URL + '/latest', {
+      headers: { 'X-Master-Key': API_KEY, 'X-Bin-Meta': 'false' }
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    return data.record || data;
+  }
+
+  function maskPhone(phone) {
+    if (!phone) return '—';
+    if (showFullPhone) return phone;
+    return '*' + phone.slice(-4);
+  }
+
+  function getSlotData(bin, date, slot) {
+    if (!bin.tickets) return { reserved: [] };
+    const sd = bin.tickets[date + '-' + slot] || { reserved: [] };
+    if (!Array.isArray(sd.reserved)) sd.reserved = [];
+    return sd;
+  }
+
+  async function loadAll() {
+    const main = document.getElementById('main');
+    main.innerHTML = '<div class="loading">載入中⋯⋯</div>';
+
+    let bin;
+    try {
+      bin = await fetchBin();
+    } catch (e) {
+      main.innerHTML = '<div class="loading" style="color:#b85c38">⚠ 載入失敗:' + (e.message || '網路問題') + '</div>';
+      return;
+    }
+
+    let totalReserved = 0, fullSlots = 0, totalCapacity = 0;
+    EVENT_DATES.forEach(d => TIME_SLOTS.forEach(s => {
+      const sd = getSlotData(bin, d.key, s.key);
+      totalReserved += sd.reserved.length;
+      totalCapacity += RESERVE_LIMIT;
+      if (sd.reserved.length >= RESERVE_LIMIT) fullSlots++;
+    }));
+    const fillRate = Math.round((totalReserved / totalCapacity) * 100);
+
+    let html = `
+      <div class="overview">
+        <div class="ov-cell">
+          <div class="ov-num green">${totalReserved}</div>
+          <div class="ov-label">Reserved · 線上預約人數</div>
+        </div>
+        <div class="ov-cell">
+          <div class="ov-num">${fillRate}<small style="font-size:0.4em">%</small></div>
+          <div class="ov-label">Fill Rate · 預約滿載率</div>
+        </div>
+        <div class="ov-cell">
+          <div class="ov-num ${fullSlots > 0 ? 'red' : ''}">${fullSlots}</div>
+          <div class="ov-label">Full Slots · 額滿時段</div>
+        </div>
+      </div>
+    `;
+
+    EVENT_DATES.forEach(d => {
+      let dayReserved = 0, dayCapacity = 0;
+      TIME_SLOTS.forEach(s => {
+        const sd = getSlotData(bin, d.key, s.key);
+        dayReserved += sd.reserved.length;
+        dayCapacity += RESERVE_LIMIT;
+      });
+      const dayRate = Math.round((dayReserved / dayCapacity) * 100);
+
+      html += `
+        <div class="day">
+          <div class="day-title">
+            <span>${d.label}</span>
+            <span class="day-total">
+              預約 <strong>${dayReserved}</strong> / ${dayCapacity} 組 ·
+              滿載率 <strong>${dayRate}%</strong>
+            </span>
+          </div>
+          <div class="slot-grid-admin">
+      `;
+
+      TIME_SLOTS.forEach(s => {
+        const sd = getSlotData(bin, d.key, s.key);
+        const r = sd.reserved.length;
+        const isFull = r >= RESERVE_LIMIT;
+        const pct = Math.min((r / RESERVE_LIMIT) * 100, 100);
+
+        html += `
+          <div class="slot-card ${isFull ? 'full' : ''}">
+            <div class="slot-head">
+              <div class="slot-head-time">${s.label}</div>
+              <div class="slot-head-status ${isFull ? 'full' : 'open'}">
+                ${isFull ? '● FULL' : '○ OPEN'}
+              </div>
+            </div>
+            <div class="slot-section-title">
+              <span>★ 預約名單</span>
+              <span class="count">${r} / ${RESERVE_LIMIT}</span>
+            </div>
+            <div class="num-list">
+              ${r === 0
+                ? '<div class="empty-msg">尚無預約</div>'
+                : sd.reserved.map((phone, i) => `
+                  <div class="num-item">
+                    <span class="num">${i + 1}</span>
+                    <span class="${showFullPhone ? 'full-phone' : 'phone'}">${maskPhone(phone)}</span>
+                  </div>
+                `).join('')
+              }
+            </div>
+            <div class="bar-wrap"><span class="bar-fill ${isFull ? 'full' : ''}" style="width:${pct}%"></span></div>
+          </div>
+        `;
+      });
+
+      html += '</div></div>';
+    });
+
+    main.innerHTML = html;
+    document.getElementById('last-update').textContent =
+      '最後更新: ' + new Date().toLocaleString('zh-TW', { hour12: false });
+  }
+
+  window.togglePhoneDisplay = function() {
+    showFullPhone = !showFullPhone;
+    const btn = document.getElementById('toggle-phone');
+    btn.textContent = showFullPhone ? '完整號碼' : '後 4 碼';
+    btn.classList.toggle('active', showFullPhone);
+    loadAll();
+  };
+
+  loadAll();
+  setInterval(loadAll, 30000);
+</script>
+
+</body>
+</html>
