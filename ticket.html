@@ -583,11 +583,13 @@
     }
 
     const existing = findAllTickets(currentBin, phone);
-    if (existing.length === EVENT_DATES.length) {
+    if (existing.length > 0) {
+      // 有任何一張票就先顯示
       renderExistingTickets(phone, existing);
       return;
     }
 
+    // 沒有任何預約 → 顯示日期面板
     document.getElementById('step-2').classList.add('active');
     document.getElementById('date-panel').style.display = '';
     renderDateButtons(existing);
@@ -708,12 +710,9 @@
       await updateBin(bin);
       currentBin = bin;
 
-      renderTicketPage({
-        phone: currentPhone,
-        date: selectedDate,
-        slot: selectedSlot,
-        number
-      });
+      // 用統一的顯示邏輯 — 重新查詢所有預約再渲染
+      const allTickets = findAllTickets(bin, currentPhone);
+      renderExistingTickets(currentPhone, allTickets);
     } catch (e) {
       alert('系統忙線,請稍後再試\n' + (e.message || ''));
       btn.disabled = false;
@@ -748,11 +747,7 @@
       <div class="reminder">
         <span class="icon">⚠</span>
         <strong>提醒</strong> · 請保持此頁面或截圖。若換裝置查詢,在預約頁輸入同支手機即可帶出。
-      </div>
-
-      <div class="action-row">
-        <button class="action-btn" onclick="continueToOtherDay()">+ 預約另一天</button>
-        <button class="action-btn danger" onclick="askCancel('${ticket.date}','${ticket.slot}','${ticket.number}')">取消預約</button>
+        預約一經送出無法線上取消,若無法到場請來電告知。
       </div>
 
       <div class="action-row">
@@ -763,76 +758,86 @@
   }
 
   function renderExistingTickets(phone, tickets) {
-    if (tickets.length === 1) {
-      renderTicketPage({ phone, ...tickets[0] });
-      return;
-    }
     const main = document.getElementById('main');
+    const existingDates = tickets.map(t => t.date);
+    const hasMoreToBook = existingDates.length < EVENT_DATES.length;
+
     let html = '';
+
+    // 顯示所有已預約的票
     tickets.forEach(t => {
       const date = EVENT_DATES.find(d => d.key === t.date);
       const slot = TIME_SLOTS.find(s => s.key === t.slot);
       html += `
         <div class="ticket-card" style="margin-bottom:16px">
-          <div class="ticket-eyebrow">${date.label} · ${slot.label}</div>
-          <div class="ticket-number" style="font-size:96px">${t.number}</div>
-          <div class="ticket-type">★ 預約</div>
+          <div class="ticket-eyebrow">YOUR RESERVATION · ${date.label} ${slot.label}</div>
+          <div class="ticket-number-label">NUMBER · 預約序號</div>
+          <div class="ticket-number" style="font-size:${tickets.length > 1 ? '96px' : '140px'}">${t.number}</div>
+          <div class="ticket-type">★ 預約 RESERVED</div>
           <div class="ticket-phone-line">手機 · <strong>${maskPhone(phone)}</strong></div>
-          <button class="action-btn danger" style="margin-top:16px"
-                  onclick="askCancel('${t.date}','${t.slot}','${t.number}')">
-            取消這筆預約
-          </button>
+          <div class="ticket-note">
+            請於 <strong style="color:var(--gold-bright)">${slot.label}</strong> 時段抵達現場,
+            出示此畫面 + 手機末 4 碼即可入場。
+          </div>
         </div>
       `;
     });
-    html += `
-      <div class="reminder">
-        <span class="icon">⚠</span>
-        <strong>提醒</strong> · 您已預約完兩天,顯示如上。
-      </div>
-      <div class="action-row">
-        <a class="action-btn" href="board_game_sale.html">← 回商品頁</a>
-        <button class="action-btn" onclick="switchPhone()">↻ 換手機查詢</button>
-      </div>
-    `;
+
+    if (hasMoreToBook) {
+      // 還有日期沒預約 → 顯示「再預約另一天」流程
+      const remainingDate = EVENT_DATES.find(d => !existingDates.includes(d.key));
+      html += `
+        <div class="info-card">
+          <span class="icon">●</span>
+          <strong>${remainingDate.label} 還沒預約</strong> · 想預約另一天嗎?
+        </div>
+
+        <div class="panel" id="date-panel">
+          <div class="panel-title">選擇要預約的日期</div>
+          <div class="date-grid" id="date-grid"></div>
+        </div>
+
+        <div class="panel" id="slot-panel" style="display:none">
+          <div class="panel-title">選擇時段</div>
+          <div class="slot-grid" id="slot-grid"></div>
+        </div>
+
+        <button class="submit-btn" id="submit-btn" disabled>
+          請選擇日期與時段
+          <span class="small">↓ 送出後立即取得預約號</span>
+        </button>
+
+        <div class="reminder">
+          <span class="icon">⚠</span>
+          <strong>提醒</strong> · 預約一經送出無法線上取消,若無法到場請來電告知。
+        </div>
+
+        <div class="action-row">
+          <a class="action-btn" href="board_game_sale.html">← 回商品頁</a>
+          <button class="action-btn" onclick="switchPhone()">↻ 換手機查詢</button>
+        </div>
+      `;
+    } else {
+      // 兩天都預約了
+      html += `
+        <div class="reminder">
+          <span class="icon">⚠</span>
+          <strong>您已預約完兩天</strong> · 預約一經送出無法線上取消,若無法到場請來電告知。
+        </div>
+        <div class="action-row">
+          <a class="action-btn" href="board_game_sale.html">← 回商品頁</a>
+          <button class="action-btn" onclick="switchPhone()">↻ 換手機查詢</button>
+        </div>
+      `;
+    }
+
     main.innerHTML = html;
+
+    // 如果還有要預約的日期,綁定日期/時段選擇邏輯
+    if (hasMoreToBook) {
+      renderDateButtons(tickets);
+    }
   }
-
-  window.askCancel = function(date, slot, number) {
-    const d = EVENT_DATES.find(x => x.key === date);
-    const s = TIME_SLOTS.find(x => x.key === slot);
-    showModal(
-      '取消預約',
-      '確定要取消 <strong>' + d.label + ' ' + s.label + '</strong> 的預約 ' + number + ' 號?<br><br>' +
-      '取消後號碼會釋出給其他人,且無法恢復。',
-      async () => {
-        closeModal();
-        const main = document.getElementById('main');
-        main.innerHTML = '<div class="loading">處理中</div>';
-        try {
-          const bin = await fetchBin();
-          const sd = getSlotData(bin, date, slot);
-          const idx = sd.reserved.indexOf(currentPhone);
-          if (idx === -1) {
-            alert('找不到此預約');
-            location.reload();
-            return;
-          }
-          sd.reserved.splice(idx, 1);
-          await updateBin(bin);
-          location.reload();
-        } catch (e) {
-          alert('取消失敗,請稍後再試\n' + (e.message || ''));
-          location.reload();
-        }
-      }
-    );
-  };
-
-  window.continueToOtherDay = function() {
-    location.hash = '';
-    init();
-  };
 
   window.switchPhone = function() {
     showModal(
