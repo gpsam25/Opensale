@@ -185,11 +185,128 @@
     .ov-cell:last-child { border-bottom: none; }
     .ov-num { font-size: 36px; }
   }
+
+  /* ===== 登入畫面 ===== */
+  #login-screen {
+    position: fixed; inset: 0;
+    background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 999; padding: 20px;
+    background-image:
+      radial-gradient(circle at 30% 30%, rgba(212, 69, 43, 0.1), transparent 50%),
+      radial-gradient(circle at 70% 70%, rgba(201, 169, 97, 0.08), transparent 50%);
+  }
+  .login-container {
+    max-width: 380px; width: 100%;
+    background: var(--bg-2);
+    border: 1px solid var(--gold);
+    padding: 40px 32px;
+    text-align: center;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+  }
+  .login-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.4em;
+    color: var(--gold); margin-bottom: 12px;
+  }
+  .login-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px; font-weight: 700;
+    color: var(--gold-bright); margin-bottom: 4px;
+    line-height: 1;
+  }
+  .login-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 14px;
+    color: var(--paper-dim); opacity: 0.6;
+    margin-bottom: 28px;
+  }
+  #login-form input {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    color: var(--paper);
+    padding: 14px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+    transition: border 0.2s ease;
+  }
+  #login-form input:focus {
+    outline: none; border-color: var(--gold);
+    background: rgba(201, 169, 97, 0.03);
+  }
+  #login-form button {
+    width: 100%;
+    background: linear-gradient(135deg, var(--gold), #b8985a);
+    color: #000;
+    border: none;
+    padding: 14px;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 15px; font-weight: 700;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  #login-form button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(201, 169, 97, 0.35);
+  }
+  .login-error {
+    color: var(--rust);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    margin-top: 12px;
+    min-height: 20px;
+  }
+  .login-hint {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--paper-dim);
+    opacity: 0.4;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--line);
+  }
+
+  /* 登出按鈕 */
+  .logout-btn {
+    background: transparent;
+    border: 1px solid rgba(184, 92, 56, 0.4);
+    color: var(--rust);
+    padding: 10px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.2em;
+    cursor: pointer; text-transform: uppercase;
+  }
+  .logout-btn:hover {
+    background: rgba(184, 92, 56, 0.1);
+  }
 </style>
 </head>
 <body>
 
-<div class="container">
+<!-- 登入畫面 -->
+<div id="login-screen" style="display:none">
+  <div class="login-container">
+    <div class="login-eyebrow">ADMIN ACCESS · 後台登入</div>
+    <h2 class="login-title">後台管理</h2>
+    <div class="login-sub">Restricted Area · 僅授權人員</div>
+    <form id="login-form" autocomplete="off">
+      <input type="password" id="pwd-input" placeholder="輸入管理密碼"
+             autocomplete="current-password" autofocus>
+      <button type="submit" id="login-btn">進入後台 →</button>
+    </form>
+    <div class="login-error" id="login-error"></div>
+    <div class="login-hint">忘記密碼請聯絡管理員</div>
+  </div>
+</div>
+
+<!-- 主畫面 (登入後才顯示) -->
+<div class="container" id="dashboard" style="display:none">
 
   <header>
     <h1>
@@ -199,6 +316,7 @@
     <div class="controls">
       <button class="toggle-btn" id="toggle-phone" onclick="togglePhoneDisplay()">後 4 碼</button>
       <button class="refresh-btn" onclick="loadAll()">↻ 重新整理</button>
+      <button class="logout-btn" onclick="logout()">登出</button>
     </div>
   </header>
 
@@ -210,6 +328,72 @@
 </div>
 
 <script>
+  // ====== 後台驗證 ======
+  // 密碼經過 SHA-256 加鹽雜湊,F12 看到也無法反推
+  // (純前端保護,真正防護需要後端,但已足夠阻擋一般使用者)
+  const _S = 'BBGAME-2026-SALT';
+  const _H = 'ae17fd1cc70c490452ed22cc49fe33b0bde5ed7b821401d97a23394829678d9a';
+  const _SK = 'bbgame_admin_session_2026';
+
+  async function _hash(s) {
+    const buf = await crypto.subtle.digest('SHA-256',
+      new TextEncoder().encode(_S + s + _S));
+    return Array.from(new Uint8Array(buf))
+      .map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  async function _verify(pwd) {
+    try { return (await _hash(pwd)) === _H; }
+    catch (e) { return false; }
+  }
+
+  function _isLoggedIn() {
+    try { return sessionStorage.getItem(_SK) === _H; }
+    catch (e) { return false; }
+  }
+
+  function _setLoggedIn() {
+    try { sessionStorage.setItem(_SK, _H); } catch (e) {}
+  }
+
+  window.logout = function() {
+    try { sessionStorage.removeItem(_SK); } catch (e) {}
+    location.reload();
+  };
+
+  // 啟動: 先檢查登入狀態
+  if (_isLoggedIn()) {
+    document.getElementById('dashboard').style.display = '';
+  } else {
+    document.getElementById('login-screen').style.display = '';
+    document.getElementById('login-form').addEventListener('submit', async e => {
+      e.preventDefault();
+      const input = document.getElementById('pwd-input');
+      const errEl = document.getElementById('login-error');
+      const btn = document.getElementById('login-btn');
+      btn.disabled = true;
+      btn.textContent = '驗證中⋯⋯';
+      errEl.textContent = '';
+
+      // 故意加一點延遲,讓暴力嘗試變慢
+      await new Promise(r => setTimeout(r, 400));
+
+      if (await _verify(input.value)) {
+        _setLoggedIn();
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('dashboard').style.display = '';
+        bootDashboard();
+      } else {
+        errEl.textContent = '✗ 密碼錯誤';
+        input.value = '';
+        input.focus();
+        btn.disabled = false;
+        btn.textContent = '進入後台 →';
+      }
+    });
+  }
+  // ====== 驗證結束 ======
+
   const EVENT_DATES = [
     { key: '0530', label: '5月30日 (週六)' },
     { key: '0531', label: '5月31日 (週日)' }
@@ -359,8 +543,11 @@
     loadAll();
   };
 
-  loadAll();
-  setInterval(loadAll, 30000);
+  function bootDashboard() {
+    loadAll();
+    setInterval(loadAll, 30000);
+  }
+  if (_isLoggedIn()) bootDashboard();
 </script>
 
 </body>
